@@ -16,7 +16,6 @@ class Vertex:
         return hash((self.id, self.label, self.color, self.position))
 
     def __eq__(self, G2_node):
-        # TODO: kolor na razie wszędzie dawać ten sam dla uproszczenia?...
         # TODO: porównywać po odległościach między wierzchołkami??? bo trzeba chyba sprawdzić, czy w środku grafu jest I czy i?
         return self.label == G2_node.label and self.color == G2_node.color
 
@@ -93,14 +92,13 @@ class TieredGraph:
         match = next(matches)
         assert match is not None, f"P1: No match for {v0} found!"
 
-        # TODO: czy mamy kopiować lewą stronę produkcji w P1?
         RHS = nx.Graph()
         RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", "red"))
         RHS.add_node(v1 := Vertex(self.corners[0], "E", "blue"))
         RHS.add_node(v2 := Vertex(self.corners[1], "E", "blue"))
         RHS.add_node(v3 := Vertex(self.corners[2], "E", "blue"))
         RHS.add_node(v4 := Vertex(self.corners[3], "E", "blue"))
-        # TODO: czy współrzędne idą pionowo/poziomo względem OX i OY??
+  
         RHS.add_node(
             i := Vertex(((self.corners[0][0] + self.corners[1][0]) / 2, (self.corners[0][1] + self.corners[2][1]) / 2),
                         "I", "red"))
@@ -141,25 +139,24 @@ class TieredGraph:
             v.position = k.position
 
         RHS = nx.Graph()
-        # TODO: uwzględnić różne kolory na róznych poziomach?
-        RHS.add_node(new_v1 := Vertex(v1.position, "E", "green"))
+        RHS.add_node(new_v1 := Vertex(v1.position, "E", "blue"))
         RHS.add_node(
-            new_v1_5 := Vertex(((v1.position[0] + v2.position[0]) / 2, (v1.position[1] + v2.position[1]) / 2), "FFF",
-                               "green"))
-        RHS.add_node(new_v2 := Vertex(v2.position, "E", "green"))
-        RHS.add_node(new_v3 := Vertex(v3.position, "E", "green"))
+            new_v1_5 := Vertex(((v1.position[0] + v2.position[0]) / 2, (v1.position[1] + v2.position[1]) / 2), "E",
+                               "blue"))
+        RHS.add_node(new_v2 := Vertex(v2.position, "E", "blue"))
+        RHS.add_node(new_v3 := Vertex(v3.position, "E", "blue"))
         RHS.add_node(
-            new_v3_5 := Vertex(((v3.position[0] + v4.position[0]) / 2, (v3.position[1] + v4.position[1]) / 2), "GGG",
-                               "green"))
-        RHS.add_node(new_v4 := Vertex(v4.position, "E", "green"))
+            new_v3_5 := Vertex(((v3.position[0] + v4.position[0]) / 2, (v3.position[1] + v4.position[1]) / 2), "E",
+                               "blue"))
+        RHS.add_node(new_v4 := Vertex(v4.position, "E", "blue"))
 
         RHS.add_node(new_i_left := Vertex(
             ((new_v1.position[0] + new_v1_5.position[0]) / 2, (new_v1.position[1] + new_v3.position[1]) / 2), "I",
-            "orange"))
+            "red"))
 
         RHS.add_node(new_i_right := Vertex(
             ((new_v1_5.position[0] + new_v2.position[0]) / 2, (new_v1_5.position[1] + new_v3_5.position[1]) / 2), "I",
-            "orange"))
+            "red"))
 
         edges = [(new_v1, new_v1_5), (new_v1_5, new_v2), (new_v1, new_v3), (new_v3, new_v3_5), (new_v1_5, new_v3_5),
                  (new_v3_5, new_v4), (new_v2, new_v4),
