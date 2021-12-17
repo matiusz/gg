@@ -1,9 +1,7 @@
-# %%
 import networkx as nx
 from matplotlib import pyplot as plt
 
 
-# %%
 class Vertex:
     def __init__(self, position: tuple((int, int)), label: str, level: int, id=[0]):
         self.label = label
@@ -13,8 +11,8 @@ class Vertex:
         id[0] += 1
 
     def __hash__(self) -> int:
-        # NetworkX identifies vertexes by hash
-        return hash((self.id))
+        # NetworkX identifies vertices by hash
+        return hash(self.id)
 
     def __eq__(self, G2_node):
         # TODO: porównywać po odległościach między wierzchołkami??? bo trzeba chyba sprawdzić, czy w środku grafu jest I czy i?
@@ -42,7 +40,7 @@ class TieredGraph:
         self.tiers.append([starting_vertex])
 
     @property
-    def colorMapping(self):
+    def color_mapping(self):
         return {
             (0, "E"): "red",
             (0, "e"): "red",
@@ -60,7 +58,7 @@ class TieredGraph:
     def show(self):
         fig, ax = plt.subplots()
         xs, ys = zip(*[node.position for node in self.graph.nodes])
-        colors = [self.colorMapping[(node.level, node.label)] for node in self.graph.nodes]
+        colors = [self.color_mapping[(node.level, node.label)] for node in self.graph.nodes]
         labels = [node.label for node in self.graph.nodes]
         xs = list(xs)
         ys = list(ys)
@@ -83,7 +81,7 @@ class TieredGraph:
 
         fig, ax = plt.subplots()
         xs, ys = zip(*[node.position for node in graph.nodes])
-        colors = [self.colorMapping[(node.level, node.label)] for node in graph.nodes]
+        colors = [self.color_mapping[(node.level, node.label)] for node in graph.nodes]
         labels = [node.label for node in graph.nodes]
         xs = list(xs)
         ys = list(ys)
@@ -115,7 +113,7 @@ class TieredGraph:
         RHS.add_node(v2 := Vertex(self.corners[1], "E", 1))
         RHS.add_node(v3 := Vertex(self.corners[2], "E", 1))
         RHS.add_node(v4 := Vertex(self.corners[3], "E", 1))
-        # TODO: czy współrzędne idą pionowo/poziomo względem OX i OY??
+
         RHS.add_node(
             i := Vertex(((self.corners[0][0] + self.corners[1][0]) / 2, (self.corners[0][1] + self.corners[2][1]) / 2),
                         "I", 1))
@@ -144,16 +142,13 @@ class TieredGraph:
         match = next(matches)
         assert match is not None, f"P2: No match for {LHS} found!"
 
-        print(match)
         # change I -> i
         matched_i = [v for v in list(match.keys()) if v.label == "I"]
         matched_i[0].label = "i"
 
         print(f"Isomorfic matched graph {match}")
 
-        # fixme?
-        sorted_matched_vertices = match.items()  # sorted(match.items(), key=lambda kvtuple: (kvtuple[0].position[1], kvtuple[0].position[0]))
-        for k, v in sorted_matched_vertices:
+        for k, v in match.items():
             v.position = k.position
 
         RHS = nx.Graph()
@@ -191,25 +186,3 @@ class TieredGraph:
         self.graph.add_edges_from([(matched_i[0], new_i_left), (matched_i[0], new_i_right)])
 
         return self
-
-
-if __name__ == '__main__':
-    v1 = (-1, 1)
-    v2 = (1, 1)
-    v3 = (-1, -1)
-    v4 = (1, -1)
-    g = TieredGraph((v1, v2, v3, v4))
-
-    # g.showLevel(0)
-    g.P1()
-    # g.showLevel(1)
-    g.P2(1)
-    # g.showLevel(0)
-    # g.showLevel(1) # todo: znika jedna krawędź xD
-    g.showLevel(2)
-    g.P2(2)
-    g.P2(2)
-    g.showLevel(1)  # todo: znika druga krawędź xD
-    g.showLevel(2)
-    g.showLevel(3)
-    # g.showLevel(2)
