@@ -29,8 +29,6 @@ class GraphMatcherByLabel(nx.isomorphism.GraphMatcher):
         super().__init__(graph1, graph2)
 
     def semantic_feasibility(self, G1_node, G2_node):
-        # TODO: chyba po samej labelce? ale trzeba też sprawdzić, czy w środku grafu jest I czy i?
-        # return G1_node.label == G2_node.label and G1_node.color == G2_node.color
         return True
 
 
@@ -59,6 +57,8 @@ class TieredGraph:
 
         for i, label in enumerate(labels):
             ax.annotate(label, (xs[i], ys[i]))
+
+        plt.title("Whole graph")
         plt.show()
 
     def showLevel(self, level: int):
@@ -81,15 +81,17 @@ class TieredGraph:
 
         for i, label in enumerate(labels):
             ax.annotate(label, (xs[i], ys[i]))
+
+        plt.title(f"Graph at level {level}")
         plt.show()
 
     def P1(self):
         LHS = nx.Graph()
-        LHS.add_node(Vertex(None, "E", "red"))
-        match = None
+        LHS.add_node(v0 := Vertex(None, "E", "red"))
+
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        if matches:
-            match = next(matches)
+        match = next(matches)
+        assert match is not None, f"P1: No match for {v0} found!"
 
         # TODO: czy mamy kopiować lewą stronę produkcji w P1?
         RHS = nx.Graph()
@@ -125,6 +127,7 @@ class TieredGraph:
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
         match = next(matches)
+        assert match is not None, f"P2: No match for {LHS} found!"
 
         # change I -> i
         matched_i = [v for v in list(match.keys()) if v.label == "I"]
