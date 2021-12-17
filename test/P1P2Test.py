@@ -87,8 +87,10 @@ class P1P2Test(unittest.TestCase):
                           ('blue E vertex at (0.0, -1.0)', 'red I vertex at (0.5, 0.0)'),
                           ('blue E vertex at (1, -1)', 'red I vertex at (0.5, 0.0)')]
         self.graph.P1()
-        g = self.graph.P2()
+        g = self.graph.P2().P2().P2()
+        g.showLevel(1)
         g.showLevel(2)
+        g.showLevel(3)
         g.show()
 
         self.validate_tiers(g, expected_tiers)
