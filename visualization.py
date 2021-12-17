@@ -21,7 +21,7 @@ class Vertex:
         return self.label == G2_node.label and self.level == G2_node.level
 
     def __repr__(self):
-        return f"{self.label} vertex at {self.position}, level {self.level}"
+        return f"{self.label} vertex at {self.position} and level {self.level}"
 
 
 class GraphMatcherByLabel(nx.isomorphism.GraphMatcher):
