@@ -1,6 +1,7 @@
 import unittest
 
-from visualization import TieredGraph
+from visualization import TieredGraph, Vertex, GraphMatcherByLabel
+import networkx as nx
 
 
 class P3P4Test(unittest.TestCase):
@@ -102,6 +103,92 @@ class P3P4Test(unittest.TestCase):
 
         self.validate_tiers(g, expected_tiers)
         self.validate_graph(expected_nodes, expected_edges)
+
+    def test_p4(self):
+        LHS = nx.Graph()
+        LHS.add_node(v0 := Vertex(None, "E", 0))
+
+        matches = GraphMatcherByLabel(self.graph.graph, LHS).subgraph_isomorphisms_iter()
+        match = next(matches)
+        assert match is not None, f"P1: No match for {v0} found!"
+
+        RHS = nx.Graph()
+        RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
+        RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
+        RHS.add_node(v1_5 := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[1][1]) / 2), "E", 1))
+        RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
+        RHS.add_node(v3 := Vertex(self.graph.corners[2], "E", 1))
+        RHS.add_node(v4 := Vertex(self.graph.corners[3], "E", 1))
+
+        RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+        RHS.add_edges_from([(v1, v1_5), (v1_5, v2), (v2, v4), (v4, v3), (v3, v1), (v1, i), (v2, i), (v3, i), (v4, i)])
+        self.graph.tiers[0] = [v0]
+        self.graph.tiers.append([v1, v1_5, v2, v3, v4, i])  # appending RHS to first level
+
+        self.graph.graph = RHS
+
+        expected_tiers = [
+            "[e vertex at (0, 0) and level 0]",
+            "[E vertex at (-1, 1) and level 1, E vertex at (0.0, 1.0) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, i vertex at (0.0, 0.0) and level 1]",
+            "[E vertex at (-1, 1) and level 2, E vertex at (0.0, 1.0) and level 2, E vertex at (1, 1) and level 2, E vertex at (-1, -1) and level 2, E vertex at (0.0, -1.0) and level 2, E vertex at (1, -1) and level 2, I vertex at (-0.5, 0.0) and level 2, I vertex at (0.5, 0.0) and level 2]",
+        ]
+
+        expected_nodes = [
+            "e vertex at (0, 0) and level 0",
+            "E vertex at (-1, 1) and level 1",
+            "E vertex at (0.0, 1.0) and level 1",
+            "E vertex at (1, 1) and level 1",
+            "E vertex at (-1, -1) and level 1",
+            "E vertex at (1, -1) and level 1",
+            "i vertex at (0.0, 0.0) and level 1",
+            "E vertex at (-1, 1) and level 2",
+            "E vertex at (0.0, 1.0) and level 2",
+            "E vertex at (1, 1) and level 2",
+            "E vertex at (-1, -1) and level 2",
+            "E vertex at (0.0, -1.0) and level 2",
+            "E vertex at (1, -1) and level 2",
+            "I vertex at (-0.5, 0.0) and level 2",
+            "I vertex at (0.5, 0.0) and level 2",
+        ]
+
+        expected_edges = [
+            ("E vertex at (-1, 1) and level 1", "E vertex at (0.0, 1.0) and level 1"),
+            ("E vertex at (-1, 1) and level 1", "E vertex at (-1, -1) and level 1"),
+            ("E vertex at (-1, 1) and level 1", "i vertex at (0.0, 0.0) and level 1"),
+            ("E vertex at (0.0, 1.0) and level 1", "E vertex at (1, 1) and level 1"),
+            ("E vertex at (1, 1) and level 1", "E vertex at (1, -1) and level 1"),
+            ("E vertex at (1, 1) and level 1", "i vertex at (0.0, 0.0) and level 1"),
+            ("E vertex at (-1, -1) and level 1", "E vertex at (1, -1) and level 1"),
+            ("E vertex at (-1, -1) and level 1", "i vertex at (0.0, 0.0) and level 1"),
+            ("E vertex at (1, -1) and level 1", "i vertex at (0.0, 0.0) and level 1"),
+            ("i vertex at (0.0, 0.0) and level 1", "I vertex at (-0.5, 0.0) and level 2"),
+            ("i vertex at (0.0, 0.0) and level 1", "I vertex at (0.5, 0.0) and level 2"),
+            ("E vertex at (-1, 1) and level 2", "E vertex at (0.0, 1.0) and level 2"),
+            ("E vertex at (-1, 1) and level 2", "E vertex at (-1, -1) and level 2"),
+            ("E vertex at (-1, 1) and level 2", "I vertex at (-0.5, 0.0) and level 2"),
+            ("E vertex at (0.0, 1.0) and level 2", "E vertex at (1, 1) and level 2"),
+            ("E vertex at (0.0, 1.0) and level 2", "E vertex at (0.0, -1.0) and level 2"),
+            ("E vertex at (0.0, 1.0) and level 2", "I vertex at (-0.5, 0.0) and level 2"),
+            ("E vertex at (0.0, 1.0) and level 2", "I vertex at (0.5, 0.0) and level 2"),
+            ("E vertex at (1, 1) and level 2", "E vertex at (1, -1) and level 2"),
+            ("E vertex at (1, 1) and level 2", "I vertex at (0.5, 0.0) and level 2"),
+            ("E vertex at (-1, -1) and level 2", "E vertex at (0.0, -1.0) and level 2"),
+            ("E vertex at (-1, -1) and level 2", "I vertex at (-0.5, 0.0) and level 2"),
+            ("E vertex at (0.0, -1.0) and level 2", "E vertex at (1, -1) and level 2"),
+            ("E vertex at (0.0, -1.0) and level 2", "I vertex at (-0.5, 0.0) and level 2"),
+            ("E vertex at (0.0, -1.0) and level 2", "I vertex at (0.5, 0.0) and level 2"),
+            ("E vertex at (1, -1) and level 2", "I vertex at (0.5, 0.0) and level 2"),
+        ]
+
+        g = self.graph.P4(1)
+
+        g.showLevel(1)
+        g.showLevel(2)
+        g.show()
+
+        self.validate_tiers(g, expected_tiers)
+        self.validate_graph(expected_nodes, expected_edges)
+
 
 if __name__ == "__main__":
     unittest.main()
