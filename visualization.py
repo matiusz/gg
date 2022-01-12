@@ -340,3 +340,153 @@ class TieredGraph:
         self.graph.add_edges_from([(matched_i[0], new_i_left), (matched_i[0], new_i_right)])
 
         return self
+
+    def P9(self, level):
+        LHS = nx.Graph()
+
+        LHS.add_node(v0 := Vertex(None, "E", level))
+        LHS.add_node(v1 := Vertex(None, "E", level))
+        LHS.add_node(v1_1 := Vertex(None, "E", level))
+        LHS.add_node(v2 := Vertex(None, "E", level))
+        LHS.add_node(v2_2 := Vertex(None, "E", level))
+        LHS.add_node(v3 := Vertex(None, "E", level))
+        LHS.add_node(v3_3 := Vertex(None, "E", level))
+        LHS.add_node(I_1 := Vertex(None, "I", level))
+        LHS.add_node(I_2 := Vertex(None, "I", level))
+        LHS.add_node(I_3 := Vertex(None, "I", level))
+        LHS.add_node(I_4 := Vertex(None, "I", level))
+
+        LHS.add_node(I_0_1 := Vertex(None, "I", level))
+        LHS.add_node(I_0_2 := Vertex(None, "I", level))
+
+        LHS.add_edges_from(
+            [(I_0_1, I_1), (I_0_1, I_2), (I_0_2, I_3), (I_0_2, I_4), (v0, I_0_1), (v0, I_0_2), (I_1, v1), (I_1, v2), (I_2, v2), (I_2, v3), (I_3, v1_1), (I_3, v2_2), (I_4, v2_2), (I_4, v3_3), (v1, v2),
+             (v2, v3), (v1_1, v2_2), (v2_2, v3_3)])
+
+        matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
+        match = next(matches)
+        assert match is not None, f"P9: No match for {LHS} found!"
+        print(match.items())
+        nodes_to_remove = []
+        for k, v in match.items():
+            v.position = k.position
+            if v1_1.position == k.position or v2_2.position == k.position or v3_3.position == k.position:
+                nodes_to_remove.append(k)
+
+
+        RHS = nx.Graph()
+        RHS.add_node(new_v0 := Vertex(v0.position, "E", level + 1))
+        RHS.add_node(new_v1 := Vertex(v1.position, "E", level + 1))
+        RHS.add_node(new_v2 := Vertex(v2.position, "E", level + 1))
+        RHS.add_node(new_v3 := Vertex(v3.position, "E", level + 1))
+        RHS.add_node(new_I_1 := Vertex(I_1.position, "I", level + 1))
+        RHS.add_node(new_I_2 := Vertex(I_2.position, "I", level + 1))
+        RHS.add_node(new_I_3 := Vertex(I_3.position, "I", level + 1))
+        RHS.add_node(new_I_4 := Vertex(I_4.position, "I", level + 1))
+        RHS.add_node(new_I_0_1 := Vertex(I_0_1.position, "I", level + 1))
+        RHS.add_node(new_I_0_2 := Vertex(I_0_2.position, "I", level + 1))
+
+        edges = [(new_v1, new_I_1),
+                 (new_v1, new_I_3),
+                 (new_v1, new_v2),
+                 (new_v2, new_I_1),
+                 (new_v2, new_I_2),
+                 (new_v2, new_I_3),
+                 (new_v2, new_I_4),
+                 (new_v2, new_v3),
+                 (new_v3, new_I_2),
+                 (new_v3, new_I_4),
+                 (new_v0, new_I_0_1),
+                 (new_v0, new_I_0_2),
+                 (new_I_0_1, new_I_1),
+                 (new_I_0_1, new_I_2),
+                 (new_I_0_2, new_I_3),
+                 (new_I_0_2, new_I_4)
+                 ]
+
+        RHS.add_edges_from(edges)
+
+        self.tiers.append([new_v0,new_v1, new_v2, new_v3, new_v3, new_I_1, new_I_2, new_I_3, new_I_4, new_I_0_1, new_I_0_2])
+
+        # add edges between layers (between i and Is)
+        self.graph.add_edges_from(edges)
+
+        self.graph.remove_nodes_from(nodes_to_remove)
+
+        print(f"Tiers after P9 {self.tiers}")
+
+        return self
+
+    def P10(self, level):
+        LHS = nx.Graph()
+
+        LHS.add_node(v0 := Vertex(None, "E", level))
+        LHS.add_node(v1 := Vertex(None, "E", level))
+        LHS.add_node(v2 := Vertex(None, "E", level))
+        LHS.add_node(v2_2 := Vertex(None, "E", level))
+        LHS.add_node(v3 := Vertex(None, "E", level))
+        LHS.add_node(v3_3 := Vertex(None, "E", level))
+        LHS.add_node(I_1 := Vertex(None, "I", level))
+        LHS.add_node(I_2 := Vertex(None, "I", level))
+        LHS.add_node(I_3 := Vertex(None, "I", level))
+        LHS.add_node(I_4 := Vertex(None, "I", level))
+
+        LHS.add_node(I_0_1 := Vertex(None, "I", level))
+        LHS.add_node(I_0_2 := Vertex(None, "I", level))
+
+        LHS.add_edges_from(
+            [(I_0_1, I_1), (I_0_1, I_2), (I_0_2, I_3), (I_0_2, I_4), (v0, I_0_1), (v0, I_0_2), (I_1, v1), (I_1, v2), (I_2, v2), (I_2, v3), (I_3, v1), (I_3, v2_2), (I_4, v2_2), (I_4, v3_3), (v1, v2),
+             (v2, v3), (v1, v2_2), (v2_2, v3_3)])
+
+        matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
+        match = next(matches)
+        assert match is not None, f"P10: No match for {LHS} found!"
+        print(match.items())
+        nodes_to_remove = []
+        for k, v in match.items():
+            v.position = k.position
+            if v2_2.position == k.position or v3_3.position == k.position:
+                nodes_to_remove.append(k)
+
+
+        RHS = nx.Graph()
+        RHS.add_node(new_v0 := Vertex(v0.position, "E", level + 1))
+        RHS.add_node(new_v1 := Vertex(v1.position, "E", level + 1))
+        RHS.add_node(new_v2 := Vertex(v2.position, "E", level + 1))
+        RHS.add_node(new_v3 := Vertex(v3.position, "E", level + 1))
+        RHS.add_node(new_I_1 := Vertex(I_1.position, "I", level + 1))
+        RHS.add_node(new_I_2 := Vertex(I_2.position, "I", level + 1))
+        RHS.add_node(new_I_3 := Vertex(I_3.position, "I", level + 1))
+        RHS.add_node(new_I_4 := Vertex(I_4.position, "I", level + 1))
+        RHS.add_node(new_I_0_1 := Vertex(I_0_1.position, "I", level + 1))
+        RHS.add_node(new_I_0_2 := Vertex(I_0_2.position, "I", level + 1))
+
+        edges = [(new_v1, new_I_1),
+                 (new_v1, new_I_3),
+                 (new_v1, new_v2),
+                 (new_v2, new_I_1),
+                 (new_v2, new_I_2),
+                 (new_v2, new_I_3),
+                 (new_v2, new_I_4),
+                 (new_v2, new_v3),
+                 (new_v3, new_I_2),
+                 (new_v3, new_I_4),
+                 (new_v0, new_I_0_1),
+                 (new_v0, new_I_0_2),
+                 (new_I_0_1, new_I_1),
+                 (new_I_0_1, new_I_2),
+                 (new_I_0_2, new_I_3),
+                 (new_I_0_2, new_I_4)
+                 ]
+
+        RHS.add_edges_from(edges)
+
+        self.tiers.append([new_v0,new_v1, new_v2, new_v3, new_v3, new_I_1, new_I_2, new_I_3, new_I_4, new_I_0_1, new_I_0_2])
+        # add edges between layers (between i and Is)
+        self.graph.add_edges_from(edges)
+
+        self.graph.remove_nodes_from(nodes_to_remove)
+
+        print(f"Tiers after P10 {self.tiers}")
+
+        return self
