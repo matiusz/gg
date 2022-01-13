@@ -1,6 +1,10 @@
 import networkx as nx
 from matplotlib import pyplot as plt
+from enum import Enum
 
+class Direction(Enum):
+    HORIZONTAL = 'horizontal'
+    VERTICAL = 'vertical'
 
 class Vertex:
     def __init__(self, position: tuple((int, int)), label: str, level: int, id=[0]):
@@ -126,7 +130,7 @@ class TieredGraph:
 
         return self
 
-    def P2(self, level):  # TODO: uwzględnić poziom
+    def P2(self, level, direction = None):  # TODO: uwzględnić poziom
 
         LHS = nx.Graph()
         LHS.add_node(v1 := Vertex(None, "E", level))
@@ -139,7 +143,22 @@ class TieredGraph:
                             (v1, i), (v2, i), (v3, i), (v4, i)])
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
+        matches_list = list(matches)
+        print(f"Found {len(matches_list)} matches to LHS graph")
+
+        matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
         match = next(matches)
+        try:
+            if direction == Direction.HORIZONTAL:
+                while list(match.keys())[0].position[0] != list(match.keys())[1].position[0]:
+                    match = next(matches)
+            elif direction == Direction.VERTICAL:
+                while list(match.keys())[0].position[1] != list(match.keys())[1].position[1]:
+                    match = next(matches)
+        except StopIteration:
+            match = None
+
+
         assert match is not None, f"P2: No match for {LHS} found!"
 
         # change I -> i
@@ -163,13 +182,24 @@ class TieredGraph:
                                level + 1))
         RHS.add_node(new_v4 := Vertex(v4.position, "E", level + 1))
 
-        RHS.add_node(new_i_left := Vertex(
-            ((new_v1.position[0] + new_v1_5.position[0]) / 2, (new_v1.position[1] + new_v3.position[1]) / 2), "I",
-            level + 1))
 
-        RHS.add_node(new_i_right := Vertex(
-            ((new_v1_5.position[0] + new_v2.position[0]) / 2, (new_v1_5.position[1] + new_v3_5.position[1]) / 2), "I",
-            level + 1))
+        if direction == Direction.HORIZONTAL:
+            RHS.add_node(new_i_left := Vertex(
+                ((new_v1.position[0] + new_v3.position[0]) / 2, (new_v1.position[1] + new_v1_5.position[1]) / 2), "I",
+                level + 1))
+
+            RHS.add_node(new_i_right := Vertex(
+                ((new_v1_5.position[0] + new_v3_5.position[0]) / 2, (new_v1_5.position[1] + new_v2.position[1]) / 2), "I",
+                level + 1))
+        else:
+            RHS.add_node(new_i_left := Vertex(
+                ((new_v1.position[0] + new_v1_5.position[0]) / 2, (new_v1.position[1] + new_v3.position[1]) / 2), "I",
+                level + 1))
+
+            RHS.add_node(new_i_right := Vertex(
+                ((new_v1_5.position[0] + new_v2.position[0]) / 2, (new_v1_5.position[1] + new_v3_5.position[1]) / 2), "I",
+                level + 1))
+        
 
         edges = [(new_v1, new_v1_5), (new_v1_5, new_v2), (new_v1, new_v3), (new_v3, new_v3_5), (new_v1_5, new_v3_5),
                  (new_v3_5, new_v4), (new_v2, new_v4),
