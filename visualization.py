@@ -199,7 +199,7 @@ class TieredGraph:
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
         match = next(matches)
-        assert match is not None, f"P2: No match for {LHS} found!"
+        assert match is not None, f"P3: No match for {LHS} found!"
 
         # change I -> i
         matched_i = [v for v in list(match.keys()) if v.label == "I"]
@@ -289,7 +289,7 @@ class TieredGraph:
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
         match = next(matches)
-        assert match is not None, f"P2: No match for {LHS} found!"
+        assert match is not None, f"P4: No match for {LHS} found!"
 
         # change I -> i
         matched_i = [v for v in list(match.keys()) if v.label == "I"]
@@ -300,6 +300,8 @@ class TieredGraph:
         for k, v in match.items():
             v.position = k.position
 
+        assert ((v1.position[0] + v2.position[0]) / 2, (v1.position[1] + v2.position[1]) / 2) == v1_5.position, "P4: v1_5 bad position"
+
         RHS = nx.Graph()
         RHS.add_node(new_v1 := Vertex(v1.position, "E", level + 1))
         RHS.add_node(new_v1_5 := Vertex(v1_5.position, "E", level + 1))
@@ -308,9 +310,9 @@ class TieredGraph:
         RHS.add_node(new_v3_5 := Vertex(((v3.position[0] + v4.position[0]) / 2, (v3.position[1] + v4.position[1]) / 2), "E", level + 1))
         RHS.add_node(new_v4 := Vertex(v4.position, "E", level + 1))
 
-        RHS.add_node(new_i_left := Vertex(((new_v1.position[0] + new_v1_5.position[0]) / 2, (new_v1.position[1] + new_v3.position[1]) / 2), "I", level + 1))
+        RHS.add_node(new_i_left := Vertex(((new_v1.position[0] + new_v3_5.position[0]) / 2, (new_v1.position[1] + new_v3_5.position[1]) / 2), "I", level + 1))
 
-        RHS.add_node(new_i_right := Vertex(((new_v1_5.position[0] + new_v2.position[0]) / 2, (new_v1_5.position[1] + new_v3_5.position[1]) / 2), "I", level + 1))
+        RHS.add_node(new_i_right := Vertex(((new_v3_5.position[0] + new_v2.position[0]) / 2, (new_v3_5.position[1] + new_v2.position[1]) / 2), "I", level + 1))
 
         edges = [
             (new_v1, new_v1_5),
