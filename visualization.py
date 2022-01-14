@@ -122,8 +122,12 @@ class TieredGraph:
         LHS.add_node(v0 := Vertex(None, "E", 0))
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
-        assert match is not None, f"P1: No match for {v0} found!"
+
+        try:
+            match = next(matches)
+        except StopIteration:
+            print(f"P1: No match for {v0} found!")
+            return self
 
         RHS = nx.Graph()
         RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
@@ -162,8 +166,9 @@ class TieredGraph:
         print(f"Found {len(matches_list)} matches to LHS graph")
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
+
         try:
+            match = next(matches)
             if direction == Direction.HORIZONTAL:
                 while list(match.keys())[0].position[0] != list(match.keys())[1].position[0]:
                     match = next(matches)
@@ -171,9 +176,8 @@ class TieredGraph:
                 while list(match.keys())[0].position[1] != list(match.keys())[1].position[1]:
                     match = next(matches)
         except StopIteration:
-            match = None
-
-        assert match is not None, f"P2: No match for {LHS} found!"
+            print(f"P2: No match for {LHS} found!")
+            return self
 
         # change I -> i
         matched_i = [v for v in list(match.keys()) if v.label == "I"]

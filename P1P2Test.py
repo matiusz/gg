@@ -66,7 +66,7 @@ class P1P2Test(unittest.TestCase):
         self.validate_tiers(g, expected_tiers)
         self.validate_graph(expected_nodes, expected_edges)
 
-    def test_p1_p2(self):
+    def test_p1_p2_vertical(self):
         expected_tiers = ['[e vertex at (0, 0) and level 0]',
                           '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, i vertex at (0.0, 0.0) and level 1]',
                           '[E vertex at (-1, 1) and level 2, E vertex at (0.0, 1.0) and level 2, E vertex at (1, 1) and level 2, E vertex at (-1, -1) and level 2, E vertex at (0.0, -1.0) and level 2, E vertex at (1, -1) and level 2, I vertex at (-0.5, 0.0) and level 2, I vertex at (0.5, 0.0) and level 2]']
@@ -136,7 +136,7 @@ class P1P2Test(unittest.TestCase):
                           ('E vertex at (1, -1) and level 2', 'I vertex at (0.5, 0.0) and level 2')]
 
         self.graph.P1()
-        g = self.graph.P2(1, direction=Direction.VERTICAL)
+        g = self.graph.P2(1)
         g.showLevel(1)
         g.showLevel(2)
         g.show()
@@ -296,11 +296,41 @@ class P1P2Test(unittest.TestCase):
         self.validate_tiers(g, expected_tiers)
         self.validate_graph(expected_nodes, expected_edges)
 
+    def test_p1_p2_horizontal_for_incomplete_graph(self):
+        expected_tiers = ['[e vertex at (0, 0) and level 0]',
+                          '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, I vertex at (0.0, 0.0) and level 1]']
+
+        expected_nodes = ['e vertex at (0, 0) and level 0',
+                          'E vertex at (-1, 1) and level 1',
+                          'E vertex at (1, 1) and level 1',
+                          'E vertex at (-1, -1) and level 1',
+                          'I vertex at (0.0, 0.0) and level 1']
+
+        expected_edges = [('E vertex at (-1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (-1, -1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+
+        g = self.graph.P1()
+        g.showLevel(1)
+
+        v4 = list(g.graph.nodes.keys())[4]
+        g.graph.remove_node(v4)
+        g.showLevel(1)
+        g.P2(1, direction=Direction.HORIZONTAL)
+        g.showLevel(1)
+        g.show()
+
+        self.validate_tiers(g, expected_tiers)
+        self.validate_graph(expected_nodes, expected_edges)
+
 
 if __name__ == '__main__':
     unittest.main()
 
     # TODO:
+    # zrobić test usuwający krawędź i zmieniający etykietę
     #  - ZAD.2: ogarnąć znajdowanie grafów izomorficznych - żeby się dało wybrać, na którym poziomie i w którym miejscu wykonujemy produkcję
     #  - testy do łamania w pionie i poziomie w P2
     #  - test do P1 P2 P2 P2 - lepsze testy: z grafami, do których nie da się podgrafów dodać, ogólnie dla większego grafu ma działać, zmienić etykietę jednego wierzchołka, brak jakiejś krawędzi
