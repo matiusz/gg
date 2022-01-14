@@ -1,6 +1,6 @@
 import unittest
 
-from visualization import Direction, TieredGraph, Production
+from visualization import Direction, TieredGraph
 
 
 def double_key_sort(l):
@@ -164,31 +164,31 @@ class P1P2Test(unittest.TestCase):
                           'I vertex at (0.0, -0.5) and level 2',
                           'I vertex at (0.0, 0.5) and level 2']
 
-        expected_edges = [('E vertex at (-1, -1) and level 1', 'E vertex at (1, -1) and level 1'), 
-                                ('E vertex at (-1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'), 
-                                ('E vertex at (-1, -1) and level 2', 'E vertex at (1, -1) and level 2'), 
-                                ('E vertex at (-1, -1) and level 2', 'I vertex at (0.0, -0.5) and level 2'), 
-                                ('E vertex at (-1, 1) and level 1', 'E vertex at (-1, -1) and level 1'), 
-                                ('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'), 
-                                ('E vertex at (-1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'), 
-                                ('E vertex at (-1, 1) and level 2', 'E vertex at (-1.0, 0.0) and level 2'), 
-                                ('E vertex at (-1, 1) and level 2', 'E vertex at (1, 1) and level 2'), 
-                                ('E vertex at (-1, 1) and level 2', 'I vertex at (0.0, 0.5) and level 2'), 
-                                ('E vertex at (-1.0, 0.0) and level 2', 'E vertex at (-1, -1) and level 2'), 
-                                ('E vertex at (-1.0, 0.0) and level 2', 'E vertex at (1.0, 0.0) and level 2'), 
-                                ('E vertex at (-1.0, 0.0) and level 2', 'I vertex at (0.0, -0.5) and level 2'), 
-                                ('E vertex at (-1.0, 0.0) and level 2', 'I vertex at (0.0, 0.5) and level 2'), 
-                                ('E vertex at (1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'), 
-                                ('E vertex at (1, -1) and level 2', 'I vertex at (0.0, -0.5) and level 2'), 
-                                ('E vertex at (1, 1) and level 1', 'E vertex at (1, -1) and level 1'), 
-                                ('E vertex at (1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'), 
-                                ('E vertex at (1, 1) and level 2', 'E vertex at (1.0, 0.0) and level 2'), 
-                                ('E vertex at (1, 1) and level 2', 'I vertex at (0.0, 0.5) and level 2'), 
-                                ('E vertex at (1.0, 0.0) and level 2', 'E vertex at (1, -1) and level 2'), 
-                                ('E vertex at (1.0, 0.0) and level 2', 'I vertex at (0.0, -0.5) and level 2'), 
-                                ('E vertex at (1.0, 0.0) and level 2', 'I vertex at (0.0, 0.5) and level 2'),
-                                ('i vertex at (0.0, 0.0) and level 1', 'I vertex at (0.0, -0.5) and level 2'), 
-                                ('i vertex at (0.0, 0.0) and level 1', 'I vertex at (0.0, 0.5) and level 2')]
+        expected_edges = [('E vertex at (-1, -1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (-1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, -1) and level 2', 'E vertex at (1, -1) and level 2'),
+                          ('E vertex at (-1, -1) and level 2', 'I vertex at (0.0, -0.5) and level 2'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (-1, -1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, 1) and level 2', 'E vertex at (-1.0, 0.0) and level 2'),
+                          ('E vertex at (-1, 1) and level 2', 'E vertex at (1, 1) and level 2'),
+                          ('E vertex at (-1, 1) and level 2', 'I vertex at (0.0, 0.5) and level 2'),
+                          ('E vertex at (-1.0, 0.0) and level 2', 'E vertex at (-1, -1) and level 2'),
+                          ('E vertex at (-1.0, 0.0) and level 2', 'E vertex at (1.0, 0.0) and level 2'),
+                          ('E vertex at (-1.0, 0.0) and level 2', 'I vertex at (0.0, -0.5) and level 2'),
+                          ('E vertex at (-1.0, 0.0) and level 2', 'I vertex at (0.0, 0.5) and level 2'),
+                          ('E vertex at (1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, -1) and level 2', 'I vertex at (0.0, -0.5) and level 2'),
+                          ('E vertex at (1, 1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, 1) and level 2', 'E vertex at (1.0, 0.0) and level 2'),
+                          ('E vertex at (1, 1) and level 2', 'I vertex at (0.0, 0.5) and level 2'),
+                          ('E vertex at (1.0, 0.0) and level 2', 'E vertex at (1, -1) and level 2'),
+                          ('E vertex at (1.0, 0.0) and level 2', 'I vertex at (0.0, -0.5) and level 2'),
+                          ('E vertex at (1.0, 0.0) and level 2', 'I vertex at (0.0, 0.5) and level 2'),
+                          ('i vertex at (0.0, 0.0) and level 1', 'I vertex at (0.0, -0.5) and level 2'),
+                          ('i vertex at (0.0, 0.0) and level 1', 'I vertex at (0.0, 0.5) and level 2')]
 
         self.graph.P1()
         g = self.graph.P2(1, direction=Direction.HORIZONTAL)
@@ -199,19 +199,102 @@ class P1P2Test(unittest.TestCase):
         self.validate_tiers(g, expected_tiers)
         self.validate_graph(expected_nodes, expected_edges)
 
-    def test_p1_p2_p2(self):
-        g = self.graph.P1()
-        g.showLevel(1)
+    def test_p1_p2_p2_all_vertical(self):
+        expected_tiers = ['[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex '
+                          'at (-1, -1) and level 1, E vertex at (1, -1) and level 1, i vertex at (0.0, '
+                          '0.0) and level 1]',
+                          '[E vertex at (-1, 1) and level 2, E vertex at (0.0, 1.0) and level 2, E '
+                          'vertex at (1, 1) and level 2, E vertex at (-1, -1) and level 2, E vertex at '
+                          '(0.0, -1.0) and level 2, E vertex at (1, -1) and level 2, i vertex at (-0.5, '
+                          '0.0) and level 2, I vertex at (0.5, 0.0) and level 2]',
+                          '[E vertex at (-1, 1) and level 3, E vertex at (-0.5, 1.0) and level 3, E '
+                          'vertex at (0.0, 1.0) and level 3, E vertex at (-1, -1) and level 3, E vertex '
+                          'at (-0.5, -1.0) and level 3, E vertex at (0.0, -1.0) and level 3, I vertex '
+                          'at (-0.75, 0.0) and level 3, I vertex at (-0.25, 0.0) and level 3]',
+                          '[e vertex at (0, 0) and level 0]']
 
-        g.P2(1)  # .P2(2)
-        g.showLevel(1)
+        expected_nodes = ['E vertex at (-0.5, -1.0) and level 3',
+                          'E vertex at (-0.5, 1.0) and level 3',
+                          'E vertex at (-1, -1) and level 1',
+                          'E vertex at (-1, -1) and level 2',
+                          'E vertex at (-1, -1) and level 3',
+                          'E vertex at (-1, 1) and level 1',
+                          'E vertex at (-1, 1) and level 2',
+                          'E vertex at (-1, 1) and level 3',
+                          'E vertex at (0.0, -1.0) and level 2',
+                          'E vertex at (0.0, -1.0) and level 3',
+                          'E vertex at (0.0, 1.0) and level 2',
+                          'E vertex at (0.0, 1.0) and level 3',
+                          'E vertex at (1, -1) and level 1',
+                          'E vertex at (1, -1) and level 2',
+                          'E vertex at (1, 1) and level 1',
+                          'E vertex at (1, 1) and level 2',
+                          'I vertex at (-0.25, 0.0) and level 3',
+                          'I vertex at (-0.75, 0.0) and level 3',
+                          'I vertex at (0.5, 0.0) and level 2',
+                          'e vertex at (0, 0) and level 0',
+                          'i vertex at (-0.5, 0.0) and level 2',
+                          'i vertex at (0.0, 0.0) and level 1']
+
+        expected_edges = [('E vertex at (-0.5, -1.0) and level 3',
+                           'E vertex at (0.0, -1.0) and level 3'),
+                          ('E vertex at (-0.5, -1.0) and level 3',
+                           'I vertex at (-0.25, 0.0) and level 3'),
+                          ('E vertex at (-0.5, -1.0) and level 3',
+                           'I vertex at (-0.75, 0.0) and level 3'),
+                          ('E vertex at (-0.5, 1.0) and level 3',
+                           'E vertex at (-0.5, -1.0) and level 3'),
+                          ('E vertex at (-0.5, 1.0) and level 3', 'E vertex at (0.0, 1.0) and level 3'),
+                          ('E vertex at (-0.5, 1.0) and level 3',
+                           'I vertex at (-0.25, 0.0) and level 3'),
+                          ('E vertex at (-0.5, 1.0) and level 3',
+                           'I vertex at (-0.75, 0.0) and level 3'),
+                          ('E vertex at (-1, -1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (-1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, -1) and level 2', 'E vertex at (0.0, -1.0) and level 2'),
+                          ('E vertex at (-1, -1) and level 2', 'i vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (-1, -1) and level 3', 'E vertex at (-0.5, -1.0) and level 3'),
+                          ('E vertex at (-1, -1) and level 3', 'I vertex at (-0.75, 0.0) and level 3'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (-1, -1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, 1) and level 2', 'E vertex at (-1, -1) and level 2'),
+                          ('E vertex at (-1, 1) and level 2', 'E vertex at (0.0, 1.0) and level 2'),
+                          ('E vertex at (-1, 1) and level 2', 'i vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (-1, 1) and level 3', 'E vertex at (-0.5, 1.0) and level 3'),
+                          ('E vertex at (-1, 1) and level 3', 'E vertex at (-1, -1) and level 3'),
+                          ('E vertex at (-1, 1) and level 3', 'I vertex at (-0.75, 0.0) and level 3'),
+                          ('E vertex at (0.0, -1.0) and level 2', 'E vertex at (1, -1) and level 2'),
+                          ('E vertex at (0.0, -1.0) and level 2', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, -1.0) and level 2', 'i vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, -1.0) and level 3',
+                           'I vertex at (-0.25, 0.0) and level 3'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'E vertex at (0.0, -1.0) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'E vertex at (1, 1) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'i vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 3', 'E vertex at (0.0, -1.0) and level 3'),
+                          ('E vertex at (0.0, 1.0) and level 3', 'I vertex at (-0.25, 0.0) and level 3'),
+                          ('E vertex at (1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, -1) and level 2', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (1, 1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, 1) and level 2', 'E vertex at (1, -1) and level 2'),
+                          ('E vertex at (1, 1) and level 2', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('i vertex at (-0.5, 0.0) and level 2',
+                           'I vertex at (-0.25, 0.0) and level 3'),
+                          ('i vertex at (-0.5, 0.0) and level 2',
+                           'I vertex at (-0.75, 0.0) and level 3'),
+                          ('i vertex at (0.0, 0.0) and level 1', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('i vertex at (0.0, 0.0) and level 1', 'i vertex at (-0.5, 0.0) and level 2')]
+
+        g = self.graph.P1().P2(1).P2(2)
         g.showLevel(2)
+        g.showLevel(3)
         g.show()
 
-        # self.validate_tiers(g, [])
-        # self.validate_graph([], [])
-
-        print(f"Graph after productions {[Production.P1, Production.P2, Production.P2]}")
+        self.validate_tiers(g, expected_tiers)
+        self.validate_graph(expected_nodes, expected_edges)
 
 
 if __name__ == '__main__':

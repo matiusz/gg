@@ -145,7 +145,7 @@ class TieredGraph:
 
         return self
 
-    def P2(self, level, direction=None):  # TODO: uwzględnić poziom, na którym ma się wykonać produkcja
+    def P2(self, level, direction=Direction.VERTICAL):  # TODO: uwzględnić poziom, na którym ma się wykonać produkcja
 
         LHS = nx.Graph()
         LHS.add_node(v1 := Vertex(None, "E", level))
