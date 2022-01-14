@@ -364,14 +364,18 @@ class TieredGraph:
              (v2, v3), (v1_1, v2_2), (v2_2, v3_3)])
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
+        nodes_to_remove = []
+        while match := next(matches):
+            nodes_to_remove = []
+
+            for k, v in match.items():
+                v.position = k.position
+                if v1_1.position == k.position or v2_2.position == k.position or v3_3.position == k.position:
+                    nodes_to_remove.append(k)
+            if v1_1.position == v1.position and v2.position == v2_2.position and v3_3.position == v3.position and v1.position[0]/2 + v3.position[0]/2 == v2.position[0] and v1.position[1]/2 + v3.position[1]/2 == v2.position[1]:
+                break
         assert match is not None, f"P9: No match for {LHS} found!"
         print(match.items())
-        nodes_to_remove = []
-        for k, v in match.items():
-            v.position = k.position
-            if v1_1.position == k.position or v2_2.position == k.position or v3_3.position == k.position:
-                nodes_to_remove.append(k)
 
 
         RHS = nx.Graph()
@@ -439,14 +443,21 @@ class TieredGraph:
              (v2, v3), (v1, v2_2), (v2_2, v3_3)])
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
-        assert match is not None, f"P10: No match for {LHS} found!"
-        print(match.items())
         nodes_to_remove = []
-        for k, v in match.items():
-            v.position = k.position
-            if v2_2.position == k.position or v3_3.position == k.position:
-                nodes_to_remove.append(k)
+        while match := next(matches):
+            nodes_to_remove = []
+
+            for k, v in match.items():
+                v.position = k.position
+                if  v2_2.position == k.position or v3_3.position == k.position:
+                    nodes_to_remove.append(k)
+            if v2.position == v2_2.position and v3_3.position == v3.position and \
+                    v1.position[0] / 2 + v3.position[0] / 2 == v2.position[0] and v1.position[1] / 2 + v3.position[
+                1] / 2 == v2.position[1]:
+                break
+
+        assert match is not None, f"P9: No match for {LHS} found!"
+        print(match.items())
 
 
         RHS = nx.Graph()
