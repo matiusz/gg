@@ -1,10 +1,23 @@
+from enum import Enum
+
 import networkx as nx
 from matplotlib import pyplot as plt
-from enum import Enum
+
 
 class Direction(Enum):
     HORIZONTAL = 'horizontal'
     VERTICAL = 'vertical'
+
+
+class Production(Enum):
+    P1 = 'P1'
+    P2 = 'P2'
+    P3 = 'P3'
+    P4 = 'P4'
+
+    def __repr__(self):
+        return self.name
+
 
 class Vertex:
     def __init__(self, position: tuple((int, int)), label: str, level: int, id=[0]):
@@ -42,6 +55,7 @@ class TieredGraph:
         self.corners = corners
         self.tiers = []
         self.tiers.append([starting_vertex])
+        self.productions = []
 
     @property
     def color_mapping(self):
@@ -76,7 +90,7 @@ class TieredGraph:
         for i, label in enumerate(labels):
             ax.annotate(label, (xs[i], ys[i]))
 
-        plt.title("Whole graph")
+        plt.title(f"Whole graph after productions {self.productions}")
         plt.show()
 
     def showLevel(self, level: int):
@@ -100,7 +114,7 @@ class TieredGraph:
         for i, label in enumerate(labels):
             ax.annotate(label, (xs[i], ys[i]))
 
-        plt.title(f"Graph at level {level}")
+        plt.title(f"Graph at level {level} after productions {self.productions}")
         plt.show()
 
     def P1(self):
@@ -127,10 +141,11 @@ class TieredGraph:
         self.tiers.append([v1, v2, v3, v4, i])  # appending RHS to first level
 
         self.graph = RHS
+        self.productions.append(Production.P1)
 
         return self
 
-    def P2(self, level, direction = None):  # TODO: uwzględnić poziom
+    def P2(self, level, direction=None):  # TODO: uwzględnić poziom, na którym ma się wykonać produkcja
 
         LHS = nx.Graph()
         LHS.add_node(v1 := Vertex(None, "E", level))
@@ -158,7 +173,6 @@ class TieredGraph:
         except StopIteration:
             match = None
 
-
         assert match is not None, f"P2: No match for {LHS} found!"
 
         # change I -> i
@@ -182,7 +196,6 @@ class TieredGraph:
                                level + 1))
         RHS.add_node(new_v4 := Vertex(v4.position, "E", level + 1))
 
-
         if direction == Direction.HORIZONTAL:
             RHS.add_node(new_i_left := Vertex(
                 ((new_v1.position[0] + new_v3.position[0]) / 2, (new_v1.position[1] + new_v1_5.position[1]) / 2), "I",
@@ -199,7 +212,6 @@ class TieredGraph:
             RHS.add_node(new_i_right := Vertex(
                 ((new_v1_5.position[0] + new_v2.position[0]) / 2, (new_v1_5.position[1] + new_v3_5.position[1]) / 2), "I",
                 level + 1))
-        
 
         edges = [(new_v1, new_v1_5), (new_v1_5, new_v2), (new_v1, new_v3), (new_v3, new_v3_5), (new_v1_5, new_v3_5),
                  (new_v3_5, new_v4), (new_v2, new_v4),
@@ -215,6 +227,7 @@ class TieredGraph:
         self.graph.add_edges_from(edges)
         self.graph.add_edges_from([(matched_i[0], new_i_left), (matched_i[0], new_i_right)])
 
+        self.productions.append(Production.P2)
         return self
 
     def P3(self, level):
@@ -304,6 +317,7 @@ class TieredGraph:
         self.graph.add_edges_from(edges)
         self.graph.add_edges_from([(matched_i[0], new_i_left), (matched_i[0], new_i_right)])
 
+        self.productions.append(Production.P3)
         return self
 
     def P4(self, level):
@@ -369,4 +383,5 @@ class TieredGraph:
         self.graph.add_edges_from(edges)
         self.graph.add_edges_from([(matched_i[0], new_i_left), (matched_i[0], new_i_right)])
 
+        self.productions.append(Production.P4)
         return self
