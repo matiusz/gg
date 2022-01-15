@@ -70,7 +70,10 @@ class TieredGraph:
             (2, "i"): "orange",
             (3, "E"): "red",
             (3, "I"): "blue",
-            (3, "i"): "blue"
+            (3, "i"): "blue",
+            # vertices labelled incorrectly:
+            (0, "U"): "yellow",
+            (1, "U"): "yellow"
         }
 
     def show(self):

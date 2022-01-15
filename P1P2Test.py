@@ -1,6 +1,6 @@
 import unittest
 
-from visualization import Direction, TieredGraph
+from visualization import Direction, TieredGraph, Vertex
 
 
 def double_key_sort(l):
@@ -24,18 +24,18 @@ class P1P2Test(unittest.TestCase):
         self.assertEqual(sorted(expectedTiers), sorted(
             list(map(lambda vertex: vertex.__repr__(), graph.tiers))))
 
-    def validate_graph(self, expected_nodes, expected_edges):
-        self.validate_nodes(expected_nodes)
-        self.validate_edges(expected_edges)
+    def validate_graph(self, graph, expected_nodes, expected_edges):
+        self.validate_nodes(graph, expected_nodes)
+        self.validate_edges(graph, expected_edges)
 
-    def validate_nodes(self, expected_nodes):
+    def validate_nodes(self, graph, expected_nodes):
         self.assertEqual(sorted(expected_nodes),
-                         sorted([node.__repr__() for node in dict(self.graph.graph.nodes).keys()]))
+                         sorted([node.__repr__() for node in dict(graph.graph.nodes).keys()]))
 
-    def validate_edges(self, expected_edges):
+    def validate_edges(self, graph, expected_edges):
         self.assertEqual(double_key_sort(expected_edges),
                          double_key_sort(
-                             [(pair[0].__repr__(), pair[1].__repr__()) for pair in list(self.graph.graph.edges)]))
+                             [(pair[0].__repr__(), pair[1].__repr__()) for pair in list(graph.graph.edges)]))
 
     def test_p1(self):
         expected_tiers = ['[e vertex at (0, 0) and level 0]',
@@ -68,7 +68,23 @@ class P1P2Test(unittest.TestCase):
         g.show()
 
         self.validate_tiers(g, expected_tiers)
-        self.validate_graph(expected_nodes, expected_edges)
+        self.validate_graph(g, expected_nodes, expected_edges)
+
+    def test_p1_for_node_with_changed_label(self):
+        expected_tiers = ['[U vertex at (0, 0) and level 0]']
+        expected_nodes = ['U vertex at (0, 0) and level 0']
+        expected_edges = []
+
+        v0 = Vertex((0, 0), "U", 0)
+        graph_with_one_node = TieredGraph((v0,))
+
+        v0 = get_ith_vertex_from_graph(graph_with_one_node, 0)
+        v0.label = "U"
+        graph_with_one_node.graph.add_node(v0)
+        graph_with_one_node.showLevel(0)
+
+        self.validate_tiers(graph_with_one_node, expected_tiers)
+        self.validate_graph(graph_with_one_node, expected_nodes, expected_edges)
 
     def test_p1_p2_vertical(self):
         expected_tiers = ['[e vertex at (0, 0) and level 0]',
@@ -146,7 +162,7 @@ class P1P2Test(unittest.TestCase):
         g.show()
 
         self.validate_tiers(g, expected_tiers)
-        self.validate_graph(expected_nodes, expected_edges)
+        self.validate_graph(g, expected_nodes, expected_edges)
 
     def test_p1_p2_horizontal(self):
         expected_tiers = ['[e vertex at (0, 0) and level 0]',
@@ -201,7 +217,7 @@ class P1P2Test(unittest.TestCase):
         g.show()
 
         self.validate_tiers(g, expected_tiers)
-        self.validate_graph(expected_nodes, expected_edges)
+        self.validate_graph(g, expected_nodes, expected_edges)
 
     def test_p1_p2_p2_all_vertical(self):
         expected_tiers = ['[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex '
@@ -298,7 +314,7 @@ class P1P2Test(unittest.TestCase):
         g.show()
 
         self.validate_tiers(g, expected_tiers)
-        self.validate_graph(expected_nodes, expected_edges)
+        self.validate_graph(g, expected_nodes, expected_edges)
 
     def test_p1_p2_horizontal_for_incomplete_graph_with_removed_vertex(self):
         expected_tiers = ['[e vertex at (0, 0) and level 0]',
@@ -327,7 +343,7 @@ class P1P2Test(unittest.TestCase):
         g.show()
 
         self.validate_tiers(g, expected_tiers)
-        self.validate_graph(expected_nodes, expected_edges)
+        self.validate_graph(g, expected_nodes, expected_edges)
 
     def test_p1_p2_vertical_for_incomplete_graph_with_removed_edge(self):
         expected_tiers = ['[e vertex at (0, 0) and level 0]',
@@ -360,14 +376,46 @@ class P1P2Test(unittest.TestCase):
         g.show()
 
         self.validate_tiers(g, expected_tiers)
-        self.validate_graph(expected_nodes, expected_edges)
+        self.validate_graph(g, expected_nodes, expected_edges)
+
+    def test_p1_p2_horizontal_for_incomplete_graph_with_changed_label(self):
+        expected_tiers = ['[e vertex at (0, 0) and level 0]',
+                          '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, U vertex at (1, -1) and level 1, I vertex at (0.0, 0.0) and level 1]']
+
+        expected_nodes = ['e vertex at (0, 0) and level 0',
+                          'E vertex at (-1, 1) and level 1',
+                          'E vertex at (1, 1) and level 1',
+                          'E vertex at (-1, -1) and level 1',
+                          'U vertex at (1, -1) and level 1',
+                          'I vertex at (0.0, 0.0) and level 1']
+
+        expected_edges = [('E vertex at (-1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, -1) and level 1', 'U vertex at (1, -1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (-1, -1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, 1) and level 1', 'U vertex at (1, -1) and level 1'),
+                          ('U vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+
+        g = self.graph.P1()
+
+        v4 = get_ith_vertex_from_graph(g, 4)
+        v4.label = "U"
+        g.graph.add_node(v4)
+        g.showLevel(1)
+
+        g = self.graph.P2(1, direction=Direction.HORIZONTAL)
+        g.showLevel(1)
+        g.show()
+
+        self.validate_tiers(g, expected_tiers)
+        self.validate_graph(g, expected_nodes, expected_edges)
 
 
 if __name__ == '__main__':
     unittest.main()
 
     # TODO:
-    # zrobić test zmieniający etykietę
     #  - ZAD.2: ogarnąć znajdowanie grafów izomorficznych - żeby się dało wybrać, na którym poziomie i w którym miejscu wykonujemy produkcję
-    #  - testy do łamania w pionie i poziomie w P2
-    #  - test do P1 P2 P2 P2 - lepsze testy: z grafami, do których nie da się podgrafów dodać, ogólnie dla większego grafu ma działać, zmienić etykietę jednego wierzchołka, brak jakiejś krawędzi
+    #  - produkcja nr 9?
