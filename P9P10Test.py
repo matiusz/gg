@@ -26,7 +26,7 @@ class P9P10Test(unittest.TestCase):
         self.assertEqual(expected_edges,
                          [(pair[0].__repr__(), pair[1].__repr__()) for pair in list(self.graph.graph.edges)])
 
-    def test_p9_pass(self):
+    def test_p9_pass_3(self):
         LHS = nx.Graph()
         LHS.add_node(v0 := Vertex(None, "E", 0))
 
@@ -37,12 +37,12 @@ class P9P10Test(unittest.TestCase):
         RHS = nx.Graph()
 
         RHS.add_node(v0 := Vertex((0, 1), "E", 1))
-        RHS.add_node(v1 := Vertex((-0.5, 0.5), "E", 1))
-        RHS.add_node(v1_1 := Vertex((0.5, 0.5), "E", 1))
-        RHS.add_node(v2 := Vertex((-0.5, 0.0), "E", 1))
-        RHS.add_node(v2_2 := Vertex((0.5, 0.0), "E", 1))
-        RHS.add_node(v3 := Vertex((-0.5, -0.5), "E", 1))
-        RHS.add_node(v3_3 := Vertex((0.5, -0.5), "E", 1))
+        RHS.add_node(v1 := Vertex((0, 0.5), "E", 1))
+        RHS.add_node(v1_1 := Vertex((0, 0.5), "E", 1))
+        RHS.add_node(v2 := Vertex((0, 0.0), "E", 1))
+        RHS.add_node(v2_2 := Vertex((0, 0.0), "E", 1))
+        RHS.add_node(v3 := Vertex((0, -0.5), "E", 1))
+        RHS.add_node(v3_3 := Vertex((0, -0.5), "E", 1))
         RHS.add_node(I_1 := Vertex((-1, 0.25), "I", 1))
         RHS.add_node(I_2 := Vertex((-1, -0.25), "I", 1))
         RHS.add_node(I_3 := Vertex((1, 0.25), "I", 1))
