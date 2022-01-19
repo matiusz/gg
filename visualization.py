@@ -357,8 +357,14 @@ class TieredGraph:
                             (v1, i), (v2, i), (v3, i), (v4, i)])
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
-        assert match is not None, f"P7: No match for {LHS} found!"
+
+        # match = None
+        try:
+            match = next(matches)
+        except StopIteration:
+            print(f"P7: No match for found!")
+            return self
+        # assert match is not None, f"P7: No match for {LHS} found!"
 
         # change I -> i
         matched_i = [v for v in list(match.keys()) if v.label == "I"]
@@ -451,8 +457,11 @@ class TieredGraph:
                             (v1, i), (v2, i), (v3, i), (v4, i)])
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
-        assert match is not None, f"P8: No match for {LHS} found!"
+        try:
+            match = next(matches)
+        except StopIteration:
+            print(f"P8: No match for found!")
+            return self
 
         # change I -> i
         matched_i = [v for v in list(match.keys()) if v.label == "I"]
