@@ -1,6 +1,6 @@
 import unittest
 import networkx as nx
-from visualization import Direction, TieredGraph, Vertex, GraphMatcherByLabel
+from visu import TieredGraph, Vertex, GraphMatcherByLabel
 from collections import deque
 
 def double_key_sort(l):
@@ -72,64 +72,76 @@ class P5P6Test(unittest.TestCase):
     #     RHS.add_node(v13 := Vertex(((self.graph.corners[0][0] + self.graph.corners[2][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "E", 1))
     #     RHS.add_node(v4 := Vertex(self.graph.corners[3], "E", 1))
         
-        
-    def test_p5_90(self):
-        expected_tiers = ['[e vertex at (0, 0) and level 0]',
-                          '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, I vertex at (0.0, 0.0) and level 1]']
 
-        expected_nodes = ['e vertex at (0, 0) and level 0',
-                          'E vertex at (-1, 1) and level 1',
-                          'E vertex at (1, 1) and level 1',
-                          'E vertex at (-1, -1) and level 1',
-                          'E vertex at (1, -1) and level 1',
-                          'I vertex at (0.0, 0.0) and level 1']
+    #     RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+    #     RHS.add_edges_from([(v1, v2), (v2, v4), (v4, v3), (v3, v13), (v13, v1),
+    #                         (v2, i), (v3, i), (v4, i), (v1, i)])
+    #     self.graph.tiers[0] = [v0]
+    #     self.graph.tiers.append([v1, v2, v3, v4, v13, i])  # appending RHS to first level
+    #     self.graph.graph = RHS
+    #     self.graph.show()
+        
+    #     g = self.graph.P5(1)
+    #     g.showLevel(0)
+    #     g.showLevel(1)
+    #     g.showLevel(2)
+    #     g.show()
+        
+        
+    # def test_p5_90(self):
+    #     expected_tiers = ['[e vertex at (0, 0) and level 0]',
+    #                       '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, I vertex at (0.0, 0.0) and level 1]']
 
-        expected_edges = [('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
-                          ('E vertex at (-1, 1) and level 1',
-                           'E vertex at (-1, -1) and level 1'),
-                          ('E vertex at (-1, 1) and level 1',
-                           'I vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (1, 1) and level 1',
-                           'E vertex at (1, -1) and level 1'),
-                          ('E vertex at (1, 1) and level 1',
-                           'I vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (-1, -1) and level 1',
-                           'E vertex at (1, -1) and level 1'),
-                          ('E vertex at (-1, -1) and level 1',
-                           'I vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+    #     expected_nodes = ['e vertex at (0, 0) and level 0',
+    #                       'E vertex at (-1, 1) and level 1',
+    #                       'E vertex at (1, 1) and level 1',
+    #                       'E vertex at (-1, -1) and level 1',
+    #                       'E vertex at (1, -1) and level 1',
+    #                       'I vertex at (0.0, 0.0) and level 1']
+
+    #     expected_edges = [('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+    #                       ('E vertex at (-1, 1) and level 1',
+    #                        'E vertex at (-1, -1) and level 1'),
+    #                       ('E vertex at (-1, 1) and level 1',
+    #                        'I vertex at (0.0, 0.0) and level 1'),
+    #                       ('E vertex at (1, 1) and level 1',
+    #                        'E vertex at (1, -1) and level 1'),
+    #                       ('E vertex at (1, 1) and level 1',
+    #                        'I vertex at (0.0, 0.0) and level 1'),
+    #                       ('E vertex at (-1, -1) and level 1',
+    #                        'E vertex at (1, -1) and level 1'),
+    #                       ('E vertex at (-1, -1) and level 1',
+    #                        'I vertex at (0.0, 0.0) and level 1'),
+    #                       ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
         
-        LHS = nx.Graph()
-        LHS_1 = nx.Graph()
-        LHS_2 = nx.Graph()
-        LHS_4 = nx.Graph()
-        
-        LHS.add_node(v0 := Vertex(None, "E", 0))
-        matches = GraphMatcherByLabel(self.graph.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
-        assert match is not None, f"P5: No match for {v0} found!"
-        RHS = nx.Graph()
-        RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
-        RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
-        RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
-        RHS.add_node(v3 := Vertex(self.graph.corners[2], "E", 1))
-        RHS.add_node(v12 := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[1][1]) / 2), "E", 1))
-        RHS.add_node(v4 := Vertex(self.graph.corners[3], "E", 1))
+    #     LHS = nx.Graph()
+
+    #     LHS.add_node(v0 := Vertex(None, "E", 0))
+    #     matches = GraphMatcherByLabel(self.graph.graph, LHS).subgraph_isomorphisms_iter()
+    #     match = next(matches)
+    #     assert match is not None, f"P5: No match for {v0} found!"
+    #     RHS = nx.Graph()
+    #     RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
+    #     RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
+    #     RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
+    #     RHS.add_node(v3 := Vertex(self.graph.corners[2], "E", 1))
+    #     RHS.add_node(v12 := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[1][1]) / 2), "E", 1))
+    #     RHS.add_node(v4 := Vertex(self.graph.corners[3], "E", 1))
         
 
-        RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
-        RHS.add_edges_from([(v1, v12), (v12, v2), (v2, v4), (v4, v3), (v3, v1),
-                            (v2, i), (v3, i), (v4, i), (v1, i)])
-        self.graph.tiers[0] = [v0]
-        self.graph.tiers.append([v1, v2, v3, v4, v12, i])  # appending RHS to first level
-        self.graph.graph = RHS
-        self.graph.show()
+    #     RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+    #     RHS.add_edges_from([(v1, v12), (v12, v2), (v2, v4), (v4, v3), (v3, v1),
+    #                         (v2, i), (v3, i), (v4, i), (v1, i)])
+    #     self.graph.tiers[0] = [v0]
+    #     self.graph.tiers.append([v1, v2, v3, v4, v12, i])  # appending RHS to first level
+    #     self.graph.graph = RHS
+    #     self.graph.show()
         
-        g = self.graph.P5(1)
-        g.showLevel(0)
-        g.showLevel(1)
-        g.showLevel(2)
-        g.show()
+    #     g = self.graph.P5(1)
+    #     g.showLevel(0)
+    #     g.showLevel(1)
+    #     g.showLevel(2)
+    #     g.show()
 
     
     # def test_p5_after_vertex_has_been_added(self):
@@ -181,13 +193,299 @@ class P5P6Test(unittest.TestCase):
     #     self.graph.graph = RHS
     #     self.graph.show()
         
-    #     g = self.graph.P5(1, Direction.HORIZONTAL)
+    #     g = self.graph.P5(1)
+    #     g.showLevel(0)
+    #     g.showLevel(1)
+    #     g.showLevel(2)
+    #     g.show()
+    
+    
+    # def test_p6(self):
+    #     expected_tiers = ['[e vertex at (0, 0) and level 0]', 
+    #                       '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, E vertex at (-1.0, 0.0) and level 1, E vertex at (0.0, 1.0) and level 1, i vertex at (0.0, 0.0) and level 1]', 
+    #                       '[E vertex at (-1, 1) and level 2, E vertex at (1, 1) and level 2, E vertex at (-1, -1) and level 2, E vertex at (1, -1) and level 2, E vertex at (0.0, 1.0) and level 2, E vertex at (-1.0, 0.0) and level 2, E vertex at (1.0, 0.0) and level 2, E vertex at (0.0, -1.0) and level 2, E vertex at (0.0, 0.0) and level 2, I vertex at (-0.5, 0.5) and level 2, I vertex at (0.5, 0.5) and level 2, I vertex at (-0.5, -0.5) and level 2, I vertex at (0.5, -0.5) and level 2]',
+    #                       ]
+
+    #     expected_nodes = ['e vertex at (0, 0) and level 0',
+    #                     'E vertex at (-1, 1) and level 1',
+    #                     'E vertex at (1, 1) and level 1',
+    #                     'E vertex at (-1, -1) and level 1',
+    #                     'E vertex at (1, -1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1']
+
+    #     expected_edges = [('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+    #                     ('E vertex at (-1, 1) and level 1',
+    #                     'E vertex at (-1, -1) and level 1'),
+    #                     ('E vertex at (-1, 1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1'),
+    #                     ('E vertex at (1, 1) and level 1',
+    #                     'E vertex at (1, -1) and level 1'),
+    #                     ('E vertex at (1, 1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1'),
+    #                     ('E vertex at (-1, -1) and level 1',
+    #                     'E vertex at (1, -1) and level 1'),
+    #                     ('E vertex at (-1, -1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1'),
+    #                     ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+        
+    #     LHS = nx.Graph()
+    #     LHS.add_node(v0 := Vertex(None, "E", 0))
+    #     matches = GraphMatcherByLabel(self.graph.graph, LHS).subgraph_isomorphisms_iter()
+    #     match = next(matches)
+    #     assert match is not None, f"P6: No match for {v0} found!"
+    #     RHS = nx.Graph()
+    #     RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
+    #     RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
+    #     RHS.add_node(v12 := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[1][1]) / 2), "E", 1))
+    #     RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
+    #     RHS.add_node(v3 := Vertex(self.graph.corners[2], "E", 1))
+    #     RHS.add_node(v13 := Vertex(((self.graph.corners[0][0] + self.graph.corners[2][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "E", 1))
+    #     RHS.add_node(v4 := Vertex(self.graph.corners[3], "E", 1))
+
+        
+        
+        
+    #     RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+    #     RHS.add_edges_from([(v1, v12), (v12, v2), (v2, v4), (v4, v3), (v3, v13), (v13, v1),
+    #                         (v1, i), (v2, i), (v3, i), (v4, i)])
+    #     self.graph.tiers[0] = [v0]
+    #     self.graph.tiers.append([v1, v2, v3, v4, v12, v13, i])  # appending RHS to first level
+    #     self.graph.graph = RHS
+        
+    #     g = self.graph.P6(1)
     #     g.showLevel(0)
     #     g.showLevel(1)
     #     g.showLevel(2)
     #     g.show()
         
-    # def test_6(self):
+        
+    # def test_6_vertex_has_been_added(self):
+    #     expected_tiers = ['[e vertex at (0, 0) and level 0]', 
+    #                       '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, E vertex at (-1.0, 0.0) and level 1, E vertex at (0.0, 1.0) and level 1, i vertex at (0.0, 0.0) and level 1]', 
+    #                       '[E vertex at (-1, 1) and level 2, E vertex at (1, 1) and level 2, E vertex at (-1, -1) and level 2, E vertex at (1, -1) and level 2, E vertex at (0.0, 1.0) and level 2, E vertex at (-1.0, 0.0) and level 2, E vertex at (1.0, 0.0) and level 2, E vertex at (0.0, -1.0) and level 2, E vertex at (0.0, 0.0) and level 2, I vertex at (-0.5, 0.5) and level 2, I vertex at (0.5, 0.5) and level 2, I vertex at (-0.5, -0.5) and level 2, I vertex at (0.5, -0.5) and level 2]',
+    #                       ]
+
+    #     expected_nodes = ['e vertex at (0, 0) and level 0',
+    #                     'E vertex at (-1, 1) and level 1',
+    #                     'E vertex at (1, 1) and level 1',
+    #                     'E vertex at (-1, -1) and level 1',
+    #                     'E vertex at (1, -1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1']
+
+    #     expected_edges = [('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+    #                     ('E vertex at (-1, 1) and level 1',
+    #                     'E vertex at (-1, -1) and level 1'),
+    #                     ('E vertex at (-1, 1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1'),
+    #                     ('E vertex at (1, 1) and level 1',
+    #                     'E vertex at (1, -1) and level 1'),
+    #                     ('E vertex at (1, 1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1'),
+    #                     ('E vertex at (-1, -1) and level 1',
+    #                     'E vertex at (1, -1) and level 1'),
+    #                     ('E vertex at (-1, -1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1'),
+    #                     ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+        
+    #     LHS = nx.Graph()
+    #     LHS.add_node(v0 := Vertex(None, "E", 0))
+    #     matches = GraphMatcherByLabel(self.graph.graph, LHS).subgraph_isomorphisms_iter()
+    #     match = next(matches)
+    #     assert match is not None, f"P6: No match for {v0} found!"
+    #     RHS = nx.Graph()
+    #     RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
+    #     RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
+    #     RHS.add_node(v12 := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[1][1]) / 2), "E", 1))
+    #     RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
+    #     RHS.add_node(v3 := Vertex(self.graph.corners[2], "E", 1))
+    #     RHS.add_node(v13 := Vertex(((self.graph.corners[0][0] + self.graph.corners[2][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "E", 1))
+    #     RHS.add_node(v4 := Vertex(self.graph.corners[3], "E", 1))
+    #     RHS.add_node(v14 := Vertex(((self.graph.corners[0][0] + self.graph.corners[2][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2 - 2), "E", 1))
+    #     RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+    #     RHS.add_edges_from([(v1, v12), (v12, v2), (v2, v4), (v4, v3), (v3, v13), (v13, v1), (v1, v14), (v14, v4),
+    #                         (v1, i), (v2, i), (v3, i), (v4, i)])
+    #     self.graph.tiers[0] = [v0]
+    #     self.graph.tiers.append([v1, v2, v3, v4, v12, v13, i, v14])  # appending RHS to first level
+    #     self.graph.graph = RHS
+        
+    #     g = self.graph.P6(1)
+    #     g.showLevel(0)
+    #     g.showLevel(1)
+    #     g.showLevel(2)
+    #     g.show()
+        
+    def test_p6_to_p5(self):
+        expected_tiers = ['[e vertex at (0, 0) and level 0]',
+                          '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, I vertex at (0.0, 0.0) and level 1]']
+
+        expected_nodes = ['e vertex at (0, 0) and level 0',
+                          'E vertex at (-1, 1) and level 1',
+                          'E vertex at (1, 1) and level 1',
+                          'E vertex at (-1, -1) and level 1',
+                          'E vertex at (1, -1) and level 1',
+                          'I vertex at (0.0, 0.0) and level 1']
+
+        expected_edges = [('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1',
+                           'E vertex at (-1, -1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1',
+                           'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, 1) and level 1',
+                           'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (1, 1) and level 1',
+                           'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, -1) and level 1',
+                           'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (-1, -1) and level 1',
+                           'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+        
+        LHS = nx.Graph()
+        LHS.add_node(v0 := Vertex(None, "E", 0))
+        matches = GraphMatcherByLabel(self.graph.graph, LHS).subgraph_isomorphisms_iter()
+        match = next(matches)
+        assert match is not None, f"P1: No match for {v0} found!"
+        RHS = nx.Graph()
+        RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
+        RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
+        RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
+        RHS.add_node(v3 := Vertex(self.graph.corners[2], "E", 1))
+        RHS.add_node(v13 := Vertex(((self.graph.corners[0][0] + self.graph.corners[2][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "E", 1))
+        RHS.add_node(v4 := Vertex(self.graph.corners[3], "E", 1))
+        
+
+        RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+        RHS.add_edges_from([(v1, v2), (v2, v4), (v4, v3), (v3, v13), (v13, v1),
+                            (v2, i), (v3, i), (v4, i), (v1, i)])
+        self.graph.tiers[0] = [v0]
+        self.graph.tiers.append([v1, v2, v3, v4, v13, i])  # appending RHS to first level
+        self.graph.graph = RHS
+        self.graph.show()
+        
+        g = self.graph.P6(1)
+        g.showLevel(0)
+        g.showLevel(1)
+        g.showLevel(2)
+        g.show()
+        
+        
+        
+    def test_p5_to_p6(self):
+        expected_tiers = ['[e vertex at (0, 0) and level 0]', 
+                            '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, E vertex at (-1.0, 0.0) and level 1, E vertex at (0.0, 1.0) and level 1, i vertex at (0.0, 0.0) and level 1]', 
+                            '[E vertex at (-1, 1) and level 2, E vertex at (1, 1) and level 2, E vertex at (-1, -1) and level 2, E vertex at (1, -1) and level 2, E vertex at (0.0, 1.0) and level 2, E vertex at (-1.0, 0.0) and level 2, E vertex at (1.0, 0.0) and level 2, E vertex at (0.0, -1.0) and level 2, E vertex at (0.0, 0.0) and level 2, I vertex at (-0.5, 0.5) and level 2, I vertex at (0.5, 0.5) and level 2, I vertex at (-0.5, -0.5) and level 2, I vertex at (0.5, -0.5) and level 2]',
+                            ]
+
+        expected_nodes = ['e vertex at (0, 0) and level 0',
+                        'E vertex at (-1, 1) and level 1',
+                        'E vertex at (1, 1) and level 1',
+                        'E vertex at (-1, -1) and level 1',
+                        'E vertex at (1, -1) and level 1',
+                        'I vertex at (0.0, 0.0) and level 1']
+
+        expected_edges = [('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+                        ('E vertex at (-1, 1) and level 1',
+                        'E vertex at (-1, -1) and level 1'),
+                        ('E vertex at (-1, 1) and level 1',
+                        'I vertex at (0.0, 0.0) and level 1'),
+                        ('E vertex at (1, 1) and level 1',
+                        'E vertex at (1, -1) and level 1'),
+                        ('E vertex at (1, 1) and level 1',
+                        'I vertex at (0.0, 0.0) and level 1'),
+                        ('E vertex at (-1, -1) and level 1',
+                        'E vertex at (1, -1) and level 1'),
+                        ('E vertex at (-1, -1) and level 1',
+                        'I vertex at (0.0, 0.0) and level 1'),
+                        ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+        
+        LHS = nx.Graph()
+        LHS.add_node(v0 := Vertex(None, "E", 0))
+        matches = GraphMatcherByLabel(self.graph.graph, LHS).subgraph_isomorphisms_iter()
+        match = next(matches)
+        assert match is not None, f"P6: No match for {v0} found!"
+        RHS = nx.Graph()
+        RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
+        RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
+        RHS.add_node(v12 := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[1][1]) / 2), "E", 1))
+        RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
+        RHS.add_node(v3 := Vertex(self.graph.corners[2], "E", 1))
+        RHS.add_node(v13 := Vertex(((self.graph.corners[0][0] + self.graph.corners[2][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "E", 1))
+        RHS.add_node(v4 := Vertex(self.graph.corners[3], "E", 1))
+
+        
+        
+        
+        RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+        RHS.add_edges_from([(v1, v12), (v12, v2), (v2, v4), (v4, v3), (v3, v13), (v13, v1),
+                            (v1, i), (v2, i), (v3, i), (v4, i)])
+        self.graph.tiers[0] = [v0]
+        self.graph.tiers.append([v1, v2, v3, v4, v12, v13, i])  # appending RHS to first level
+        self.graph.graph = RHS
+        
+        g = self.graph.P5(1)
+        g.showLevel(0)
+        g.showLevel(1)
+        g.showLevel(2)
+        g.show()
+        
+    
+    
+    # def test_6_90(self):
+    #     expected_tiers = ['[e vertex at (0, 0) and level 0]', 
+    #                       '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, E vertex at (-1.0, 0.0) and level 1, E vertex at (0.0, 1.0) and level 1, i vertex at (0.0, 0.0) and level 1]', 
+    #                       '[E vertex at (-1, 1) and level 2, E vertex at (1, 1) and level 2, E vertex at (-1, -1) and level 2, E vertex at (1, -1) and level 2, E vertex at (0.0, 1.0) and level 2, E vertex at (-1.0, 0.0) and level 2, E vertex at (1.0, 0.0) and level 2, E vertex at (0.0, -1.0) and level 2, E vertex at (0.0, 0.0) and level 2, I vertex at (-0.5, 0.5) and level 2, I vertex at (0.5, 0.5) and level 2, I vertex at (-0.5, -0.5) and level 2, I vertex at (0.5, -0.5) and level 2]',
+    #                       ]
+
+    #     expected_nodes = ['e vertex at (0, 0) and level 0',
+    #                     'E vertex at (-1, 1) and level 1',
+    #                     'E vertex at (1, 1) and level 1',
+    #                     'E vertex at (-1, -1) and level 1',
+    #                     'E vertex at (1, -1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1']
+
+    #     expected_edges = [('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+    #                     ('E vertex at (-1, 1) and level 1',
+    #                     'E vertex at (-1, -1) and level 1'),
+    #                     ('E vertex at (-1, 1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1'),
+    #                     ('E vertex at (1, 1) and level 1',
+    #                     'E vertex at (1, -1) and level 1'),
+    #                     ('E vertex at (1, 1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1'),
+    #                     ('E vertex at (-1, -1) and level 1',
+    #                     'E vertex at (1, -1) and level 1'),
+    #                     ('E vertex at (-1, -1) and level 1',
+    #                     'I vertex at (0.0, 0.0) and level 1'),
+    #                     ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+        
+    #     LHS = nx.Graph()
+    #     LHS.add_node(v0 := Vertex(None, "E", 0))
+    #     matches = GraphMatcherByLabel(self.graph.graph, LHS).subgraph_isomorphisms_iter()
+    #     match = next(matches)
+    #     assert match is not None, f"P6: No match for {v0} found!"
+    #     RHS = nx.Graph()
+    #     RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
+    #     RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
+    #     RHS.add_node(v12 := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[1][1]) / 2), "E", 1))
+    #     RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
+    #     RHS.add_node(v3 := Vertex(self.graph.corners[2], "E", 1))
+    #     RHS.add_node(v24 := Vertex(((self.graph.corners[1][0] + self.graph.corners[3][0]) / 2, (self.graph.corners[1][1] + self.graph.corners[3][1]) / 2), "E", 1))
+    #     RHS.add_node(v4 := Vertex(self.graph.corners[3], "E", 1))
+
+    #     RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[1][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+    #     RHS.add_edges_from([(v1, v12), (v12, v2), (v4, v3), (v1, v3), (v4, v24), (v24, v2),
+    #                         (v1, i), (v2, i), (v3, i), (v4, i)])
+    #     self.graph.tiers[0] = [v0]
+    #     self.graph.tiers.append([v1, v2, v3, v4, v12, v24, i])  # appending RHS to first level
+    #     self.graph.graph = RHS
+        
+    #     g = self.graph.P6(1)
+    #     g.showLevel(0)
+    #     g.showLevel(1)
+    #     g.showLevel(2)
+        
+        
+    # def test_6_without_edge(self):
     
     #     expected_tiers = ['[e vertex at (0, 0) and level 0]', 
     #                       '[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex at (-1, -1) and level 1, E vertex at (1, -1) and level 1, E vertex at (-1.0, 0.0) and level 1, E vertex at (0.0, 1.0) and level 1, i vertex at (0.0, 0.0) and level 1]', 
@@ -237,7 +535,7 @@ class P5P6Test(unittest.TestCase):
     #     self.graph.tiers.append([v1, v2, v3, v4, v12, i])  # appending RHS to first level
     #     self.graph.graph = RHS
         
-    #     g = self.graph.P5(1, Direction.HORIZONTAL)
+    #     g = self.graph.P5(1)
     #     g.showLevel(0)
     #     g.showLevel(1)
     #     g.showLevel(2)
