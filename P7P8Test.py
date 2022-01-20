@@ -607,12 +607,13 @@ class P7P8Test(unittest.TestCase):
                           "E vertex at (1, 1) and level 1",
                           "E vertex at (1.0, 0.0) and level 1",
                           "E vertex at (1, -1) and level 1",
+                          "E vertex at (-1.0, 0.0) and level 1",
                           "E vertex at (-1, -1) and level 1",
                           "E vertex at (-1, 2) and level 1",
                           "I vertex at (0.0, 0.0) and level 1"]
 
         expected_edges = [("E vertex at (-1, 1) and level 1", "E vertex at (0.0, 1.0) and level 1"),
-                          ("E vertex at (-1, 1) and level 1", "E vertex at (-1, -1) and level 1"),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (-1.0, 0.0) and level 1'),
                           ("E vertex at (-1, 1) and level 1", "I vertex at (0.0, 0.0) and level 1"),
                           ("E vertex at (0.0, 1.0) and level 1", "E vertex at (1, 1) and level 1"),
                           ("E vertex at (1, 1) and level 1", "E vertex at (1.0, 0.0) and level 1"),
@@ -1302,7 +1303,7 @@ class P7P8Test(unittest.TestCase):
         self.validate_graph(expected_nodes, expected_edges)
 
 
-    def test_p8_not_on_middle(self):
+    def test_p8_vertex_not_on_middle(self):
         expected_tiers = [
             "[e vertex at (0, 0) and level 0]",
             "[E vertex at (-1, 1) and level 1, E vertex at (0.5, 1.0) and level 1, E vertex at (1, 1) and level 1, E vertex at (1.0, 0.0) and level 1, E vertex at (1, -1) and level 1, E vertex at (0.0, -1.0) and level 1, E vertex at (-1.0, 0.0) and level 1, E vertex at (-1, -1) and level 1, i vertex at (0.0, 0.0) and level 1]",
