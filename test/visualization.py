@@ -382,7 +382,7 @@ class TieredGraph:
 
         return self
     
-    def P5(self, level, direction=None):
+    def P5(self, level):
         LHS = nx.Graph()
         LHS.add_node(v1 := Vertex(None, "E", level))
         LHS.add_node(v1_3 := Vertex(None, "E", level))
@@ -390,6 +390,36 @@ class TieredGraph:
         LHS.add_node(v3 := Vertex(None, "E", level))
         LHS.add_node(v4 := Vertex(None, "E", level))
         LHS.add_node(i := Vertex(None, "I", level))
+        
+        
+        LHS1 = nx.Graph()
+        LHS1.add_node(v1 := Vertex(None, "E", level))
+        LHS1.add_node(v2 := Vertex(None, "E", level))
+        LHS1.add_node(v3 := Vertex(None, "E", level))
+        LHS1.add_node(v1_2 := Vertex(None, "E", level))
+        LHS1.add_node(v4 := Vertex(None, "E", level))
+        LHS1.add_node(i := Vertex(None, "I", level))
+        
+        
+        LHS2 = nx.Graph()
+        LHS2.add_node(v1 := Vertex(None, "E", level))
+        LHS2.add_node(v2_4 := Vertex(None, "E", level))
+        LHS2.add_node(v2 := Vertex(None, "E", level))
+        LHS2.add_node(v3 := Vertex(None, "E", level))
+        LHS2.add_node(v4 := Vertex(None, "E", level))
+        LHS2.add_node(i := Vertex(None, "I", level))
+        
+        
+        LHS3 = nx.Graph()
+        LHS3.add_node(v1 := Vertex(None, "E", level))
+        LHS3.add_node(v2 := Vertex(None, "E", level))
+        LHS3.add_node(v3 := Vertex(None, "E", level))
+        LHS3.add_node(v3_4 := Vertex(None, "E", level))
+        LHS3.add_node(v4 := Vertex(None, "E", level))
+        LHS3.add_node(i := Vertex(None, "I", level))
+    
+
+    
 
         
         LHS.add_edges_from([(v1, v2), 
@@ -401,106 +431,134 @@ class TieredGraph:
                             (v2, i),
                             (v3, i), 
                             (v4, i)])
+        
+        LHS1.add_edges_from([(v1, v1_2), (v1_2, v2), (v2, v4), (v4, v3), (v3, v1),
+                            (v2, i), (v3, i), (v4, i), (v1, i)])
+        
+        LHS2.add_edges_from([(v1, v2), (v2, v2_4), (v2_4, v4), (v4, v3), (v3, v1),
+                            (v2, i), (v3, i), (v4, i), (v1, i)])
+        
+        LHS3.add_edges_from([(v1, v2), (v2, v4), (v4, v3_4), (v3_4, v3), (v3, v1),
+                    (v2, i), (v3, i), (v4, i), (v1, i)])
+            
+            
+        matches_list = []
+        for i, lhs in enumerate([LHS, LHS1, LHS2, LHS3]):
+            matches = GraphMatcherByLabel(self.graph, lhs).subgraph_isomorphisms_iter()
+            matches_list.extend(list(matches))
+            print(i)
+            print(f"MATCH LHS_{i}: ", matches_list)
             
 
-        matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        matches_list = list(matches)
-        print(f"Found {len(matches_list)} matches to LHS graph")
+        # matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
+        # matches_list = list(matches)
+        # print()
+        # print("MATCH LHS: ", matches_list)
+        # #print(f"Found {len(matches_list)} matches to LHS graph")
         
-        matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
-        try:
-            if direction == Direction.HORIZONTAL:
-                while list(match.keys())[0].position[0] != list(match.keys())[1].position[0]:
-                    match = next(matches)
-            elif direction == Direction.VERTICAL:
-                while list(match.keys())[0].position[1] != list(match.keys())[1].position[1]:
-                    match = next(matches)
-        except StopIteration:
-            match = None
+        
+        # matches_1 =  GraphMatcherByLabel(self.graph, LHS1).subgraph_isomorphisms_iter()
+        # matches_list += list(matches_1)
+        # print()
+        # print("MATCH LHS1: ", matches_list)
+        # #print(f"Found {len(matches_list)} matches to LHS graph")
+        
+        # matches_2 =  GraphMatcherByLabel(self.graph, LHS2).subgraph_isomorphisms_iter()
+        # matches_list += list(matches_2)
+        # print()
+        # print("MATCH LHS2: ", matches_list)
+        # #print(f"Found {len(matches_list)} matches to LHS graph")
+        
+        # matches_3 =  GraphMatcherByLabel(self.graph, LHS3).subgraph_isomorphisms_iter()
+        # matches_list += list(matches_3)
+        # print()
+        # print("MATCH LHS3: ", matches_list)
+        # #print(f"Found {len(matches_list)} matches to LHS graph")
+        
+        # matches = iter(matches_list)
+        # match = next(matches)
+        # print(match)
+        # assert match is not None, f"P5: No match for {LHS} found!"
+        
+        #         # change I -> i
+        # matched_i = [v for v in list(match.keys()) if v.label == "I"]
+        # matched_i[0].label = "i"
+
+        # print(f"Isomorfic matched graph {match}")
+
+        # for k, v in match.items():
+        #     v.position = k.position
             
-        assert match is not None, f"P5: No match for {LHS} found!"
+        # RHS = nx.Graph()
         
-                # change I -> i
-        matched_i = [v for v in list(match.keys()) if v.label == "I"]
-        matched_i[0].label = "i"
+        # new_v1 = Vertex(v1.position, "E", level + 1)
+        # new_v2 = Vertex(v2.position, "E", level + 1)
+        # new_v3 = Vertex(v3.position, "E", level + 1)
+        # new_v4 = Vertex(v4.position, "E", level + 1)
+        # v12 = Vertex(((v1.position[0] + v2.position[0]) / 2, (v1.position[1] + v2.position[1]) / 2), "E", level + 1)
+        # v13 = Vertex(((v1.position[0] + v3.position[0]) / 2, (v1.position[1] + v3.position[1]) / 2), "E", level + 1)
+        # v24 = Vertex(((v2.position[0] + v4.position[0]) / 2, (v2.position[1] + v4.position[1]) / 2), "E", level + 1)
+        # v34 = Vertex(((v3.position[0] + v4.position[0]) / 2, (v3.position[1] + v4.position[1]) / 2), "E", level + 1)
+        # vc = Vertex(((v1.position[0] + v4.position[0]) / 2, (v1.position[1] + v4.position[1]) / 2), "E", level + 1)
+        
+        # RHS.add_node(new_v1)
+        # RHS.add_node(new_v2)
+        # RHS.add_node(new_v3)
+        # RHS.add_node(new_v4)
+        # RHS.add_node(v12)
+        # RHS.add_node(v13)
+        # RHS.add_node(v24)
+        # RHS.add_node(v34)
+        # RHS.add_node(vc)
+        
+        # RHS.add_node(new_i_left_up := Vertex(
+        #     ((new_v1.position[0] + v13.position[0]) / 2 + abs(v13.position[1] - v1.position[1]) / 2, (new_v1.position[1] + v12.position[1]) / 2 - abs(v12.position[0] - v1.position[0]) / 2), "I",
+        #     level + 1))
 
-        print(f"Isomorfic matched graph {match}")
+        # RHS.add_node(new_i_right_up := Vertex(
+        #     ((v12.position[0] + vc.position[0]) / 2 + abs(v12.position[1] - vc.position[1]) / 2, (v12.position[1] + new_v2.position[1]) / 2 - abs(v12.position[0] - new_v2.position[0]) / 2), "I",
+        #     level + 1))
+        # RHS.add_node(new_i_left_down := Vertex(
+        #     ((v13.position[0] + new_v3.position[0]) / 2 + abs(v13.position[1] - new_v3.position[1]) / 2, (v13.position[1] + vc.position[1]) / 2 - abs(v13.position[0] - vc.position[0]) / 2), "I",
+        #     level + 1))
 
-        for k, v in match.items():
-            v.position = k.position
+        # RHS.add_node(new_i_right_down := Vertex(
+        #     ((vc.position[0] + v34.position[0]) / 2 + abs(vc.position[1] - v34.position[1]) / 2, (vc.position[1] + v24.position[1]) / 2 - abs(vc.position[0] - v24.position[0]) / 2), "I",
+        #     level + 1))
+        # # else:
+        # #     RHS.add_node(new_i_left_up := Vertex(
+        # #         ((new_v1.position[0] + v12.position[0]) / 2, (new_v1.position[1] + v13.position[1]) / 2), "I",
+        # #         level + 1))
+
+        # #     RHS.add_node(new_i_right_up := Vertex(
+        # #         ((v12.position[0] + new_v2.position[0]) / 2,( v12.position[1] + vc.position[1]) / 2), "I",
+        # #         level + 1))
             
-        RHS = nx.Graph()
-        
-        new_v1 = Vertex(v1.position, "E", level + 1)
-        new_v2 = Vertex(v2.position, "E", level + 1)
-        new_v3 = Vertex(v3.position, "E", level + 1)
-        new_v4 = Vertex(v4.position, "E", level + 1)
-        v12 = Vertex(((v1.position[0] + v2.position[0]) / 2, (v1.position[1] + v2.position[1]) / 2), "E", level + 1)
-        v13 = Vertex(((v1.position[0] + v3.position[0]) / 2, (v1.position[1] + v3.position[1]) / 2), "E", level + 1)
-        v24 = Vertex(((v2.position[0] + v4.position[0]) / 2, (v2.position[1] + v4.position[1]) / 2), "E", level + 1)
-        v34 = Vertex(((v3.position[0] + v4.position[0]) / 2, (v3.position[1] + v4.position[1]) / 2), "E", level + 1)
-        vc = Vertex(((v1.position[0] + v4.position[0]) / 2, (v1.position[1] + v4.position[1]) / 2), "E", level + 1)
-        
-        RHS.add_node(new_v1)
-        RHS.add_node(new_v2)
-        RHS.add_node(new_v3)
-        RHS.add_node(new_v4)
-        RHS.add_node(v12)
-        RHS.add_node(v13)
-        RHS.add_node(v24)
-        RHS.add_node(v34)
-        RHS.add_node(vc)
-        
-        if direction == Direction.HORIZONTAL:
-            RHS.add_node(new_i_left_up := Vertex(
-                ((new_v1.position[0] + v13.position[0]) / 2 + abs(v13.position[1] - v1.position[1]) / 2, (new_v1.position[1] + v12.position[1]) / 2 - abs(v12.position[0] - v1.position[0]) / 2), "I",
-                level + 1))
+        # #     RHS.add_node(new_i_left_down := Vertex(
+        # #         ((v13.position[0] + vc.position[0]) / 2, (v13.position[1] + new_v3.position[1]) / 2), "I",
+        # #         level + 1))
 
-            RHS.add_node(new_i_right_up := Vertex(
-                ((v12.position[0] + vc.position[0]) / 2 + abs(v12.position[1] - vc.position[1]) / 2, (v12.position[1] + new_v2.position[1]) / 2 - abs(v12.position[0] - new_v2.position[0]) / 2), "I",
-                level + 1))
-            RHS.add_node(new_i_left_down := Vertex(
-                ((v13.position[0] + new_v3.position[0]) / 2 + abs(v13.position[1] - new_v3.position[1]) / 2, (v13.position[1] + vc.position[1]) / 2 - abs(v13.position[0] - vc.position[0]) / 2), "I",
-                level + 1))
-
-            RHS.add_node(new_i_right_down := Vertex(
-                ((vc.position[0] + v34.position[0]) / 2 + abs(vc.position[1] - v34.position[1]) / 2, (vc.position[1] + v24.position[1]) / 2 - abs(vc.position[0] - v24.position[0]) / 2), "I",
-                level + 1))
-        else:
-            RHS.add_node(new_i_left_up := Vertex(
-                ((new_v1.position[0] + v12.position[0]) / 2, (new_v1.position[1] + v13.position[1]) / 2), "I",
-                level + 1))
-
-            RHS.add_node(new_i_right_up := Vertex(
-                ((v12.position[0] + new_v2.position[0]) / 2,( v12.position[1] + vc.position[1]) / 2), "I",
-                level + 1))
+        # #     RHS.add_node(new_i_right_down := Vertex(
+        # #         ((vc.position[0] + v24.position[0]) / 2, (vc.position[1] + v34.position[1]) / 2), "I",
+        # #         level + 1))
             
-            RHS.add_node(new_i_left_down := Vertex(
-                ((v13.position[0] + vc.position[0]) / 2, (v13.position[1] + new_v3.position[1]) / 2), "I",
-                level + 1))
+        # edges = [(new_v1, v12), (v12, new_v2), (new_v2, v24), (v24, new_v4), (new_v4, v34),
+        #          (v34, new_v3), (new_v3, v13),
+        #          (v13, new_v1), (v12, vc), (v13, vc), (v24, vc),
+        #          (v34, vc), (new_v1, new_i_left_up), (v12, new_i_left_up), (vc, new_i_left_up), (v13, new_i_left_up),
+        #          (v12, new_i_right_up), (new_v2, new_i_right_up), (v24, new_i_right_up), (vc, new_i_right_up),
+        #          (v13, new_i_left_down), (vc, new_i_left_down), (v34, new_i_left_down), (new_v3, new_i_left_down),
+        #          (vc, new_i_right_down), (v24, new_i_right_down), (new_v4, new_i_right_down), (v34, new_i_right_down)]
+        # RHS.add_edges_from(edges)
+        
+        # self.tiers.append([new_v1, new_v2, new_v3, new_v4, v12, v13, v24, v34, vc, new_i_left_up, new_i_right_up, new_i_left_down, new_i_right_down])
+        
+        # print(f"Tiers after P5 {self.tiers}")
 
-            RHS.add_node(new_i_right_down := Vertex(
-                ((vc.position[0] + v24.position[0]) / 2, (vc.position[1] + v34.position[1]) / 2), "I",
-                level + 1))
-            
-        edges = [(new_v1, v12), (v12, new_v2), (new_v2, v24), (v24, new_v4), (new_v4, v34),
-                 (v34, new_v3), (new_v3, v13),
-                 (v13, new_v1), (v12, vc), (v13, vc), (v24, vc),
-                 (v34, vc), (new_v1, new_i_left_up), (v12, new_i_left_up), (vc, new_i_left_up), (v13, new_i_left_up),
-                 (v12, new_i_right_up), (new_v2, new_i_right_up), (v24, new_i_right_up), (vc, new_i_right_up),
-                 (v13, new_i_left_down), (vc, new_i_left_down), (v34, new_i_left_down), (new_v3, new_i_left_down),
-                 (vc, new_i_right_down), (v24, new_i_right_down), (new_v4, new_i_right_down), (v34, new_i_right_down)]
-        RHS.add_edges_from(edges)
+        # # add edges between layers (between i and Is)
+        # self.graph.add_edges_from(edges)
         
-        self.tiers.append([new_v1, new_v2, new_v3, new_v4, v12, v13, v24, v34, vc, new_i_left_up, new_i_right_up, new_i_left_down, new_i_right_down])
-        
-        print(f"Tiers after P5 {self.tiers}")
-
-        # add edges between layers (between i and Is)
-        self.graph.add_edges_from(edges)
-        
-        self.graph.add_edges_from([(matched_i[0], new_i_left_up), (matched_i[0], new_i_right_up)])
+        # self.graph.add_edges_from([(matched_i[0], new_i_left_up), (matched_i[0], new_i_right_up)])
     
         return self
     
