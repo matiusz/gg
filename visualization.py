@@ -70,7 +70,10 @@ class TieredGraph:
             (2, "i"): "orange",
             (3, "E"): "red",
             (3, "I"): "blue",
-            (3, "i"): "blue"
+            (3, "i"): "blue",
+            # vertices labelled incorrectly:
+            (0, "U"): "yellow",
+            (1, "U"): "yellow"
         }
 
     def show(self):
@@ -122,8 +125,12 @@ class TieredGraph:
         LHS.add_node(v0 := Vertex(None, "E", 0))
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
-        assert match is not None, f"P1: No match for {v0} found!"
+
+        try:
+            match = next(matches)
+        except StopIteration:
+            print(f"P1: No match for {v0} found!")
+            return self
 
         RHS = nx.Graph()
         RHS.add_node(v0 := Vertex(list(match.keys())[0].position, "e", 0))
@@ -158,8 +165,8 @@ class TieredGraph:
                             (v1, i), (v2, i), (v3, i), (v4, i)])
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        match = next(matches)
         try:
+            match = next(matches)
             if direction == Direction.HORIZONTAL:
                 while list(match.keys())[0].position[0] != list(match.keys())[1].position[0]:
                     match = next(matches)
@@ -167,9 +174,8 @@ class TieredGraph:
                 while list(match.keys())[0].position[1] != list(match.keys())[1].position[1]:
                     match = next(matches)
         except StopIteration:
-            match = None
-
-        assert match is not None, f"P2: No match for {LHS} found!"
+            print(f"P2: No match for {LHS} found!")
+            return self
 
         # change I -> i
         matched_i = [v for v in list(match.keys()) if v.label == "I"]
