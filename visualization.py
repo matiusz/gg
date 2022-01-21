@@ -158,10 +158,6 @@ class TieredGraph:
                             (v1, i), (v2, i), (v3, i), (v4, i)])
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        matches_list = list(matches)
-        print(f"Found {len(matches_list)} matches to LHS graph")
-
-        matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
         match = next(matches)
         try:
             if direction == Direction.HORIZONTAL:
@@ -220,7 +216,9 @@ class TieredGraph:
         RHS.add_edges_from(edges)
 
         # appending RHS to new level - powinno uwzględniać poziom "parenta"
-        self.tiers.append([new_v1, new_v1_5, new_v2, new_v3, new_v3_5, new_v4, new_i_left, new_i_right])
+        if level+1 >= len(self.tiers):
+            self.tiers.append([])
+        self.tiers[level+1].extend([new_v1, new_v1_5, new_v2, new_v3, new_v3_5, new_v4, new_i_left, new_i_right])
         print(f"Tiers after P2 {self.tiers}")
 
         # add edges between layers (between i and Is)
