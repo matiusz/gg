@@ -143,6 +143,25 @@ class P3P4Test(unittest.TestCase):
         self.validate_tiers(g, expected_tiers)
         self.validate_graph(expected_nodes, expected_edges)
 
+    def test_p3_invalid_LHS(self):
+        RHS = nx.Graph()
+        RHS.add_node(v0 := Vertex((0, 0), "e", 0))
+        RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
+        RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
+        RHS.add_node(v3 := Vertex(self.graph.corners[2], "E", 1))
+
+        RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[2][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+        RHS.add_edges_from([(v1, v2), (v2, v3), (v1, i), (v2, i), (v3, i)])
+        self.graph.tiers[0] = [v0]
+        self.graph.tiers.append([v1, v2, v3, i])  # appending RHS to first level
+
+        self.graph.graph = RHS
+
+        self.graph.showLevel(1)
+
+        with self.assertRaises(StopIteration):
+            g = self.graph.P3(1)
+
     def test_p4_rotation_0(self):
         P4RHS(self.graph, 0)
 
@@ -419,7 +438,28 @@ class P3P4Test(unittest.TestCase):
 
         self.graph.graph = RHS
 
+        self.graph.showLevel(1)
+
         with self.assertRaises(AssertionError):
+            g = self.graph.P4(1)
+
+    def test_p4_invalid_LHS(self):
+        RHS = nx.Graph()
+        RHS.add_node(v0 := Vertex((0, 0), "e", 0))
+        RHS.add_node(v1 := Vertex(self.graph.corners[0], "E", 1))
+        RHS.add_node(v2 := Vertex(self.graph.corners[1], "E", 1))
+        RHS.add_node(v3 := Vertex(self.graph.corners[3], "E", 1))
+
+        RHS.add_node(i := Vertex(((self.graph.corners[0][0] + self.graph.corners[2][0]) / 2, (self.graph.corners[0][1] + self.graph.corners[2][1]) / 2), "I", 1))
+        RHS.add_edges_from([(v1, v2), (v2, v3), (v1, i), (v2, i), (v3, i)])
+        self.graph.tiers[0] = [v0]
+        self.graph.tiers.append([v1, v2, v3, i])  # appending RHS to first level
+
+        self.graph.graph = RHS
+
+        self.graph.showLevel(1)
+
+        with self.assertRaises(StopIteration):
             g = self.graph.P4(1)
 
 
