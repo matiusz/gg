@@ -1,0 +1,14 @@
+def setUp():
+    v1 = (-1, 1)
+    v2 = (1, 1)
+    v3 = (-1, -1)
+    v4 = (1, -1)
+    return TieredGraph((v1, v2, v3, v4))
+
+graph = setUp()
+graph.P1()
+graph.P2(1, direction = Direction.VERTICAL)
+graph.P2(2, direction = Direction.HORIZONTAL).P2(2, direction = Direction.HORIZONTAL)
+graph.showLevel(3)
+graph.P9(3)
+graph.show()

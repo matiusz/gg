@@ -1282,7 +1282,10 @@ class P9P10Test(unittest.TestCase):
         self.validate_graph(expected_nodes, expected_edges)
 
 
-if __name__ == "_main_":
-    # unittest.main()
+if __name__ == "__main__":
+    #unittest.main()
     a = P9P10Test()
-    a.test_p10()
+    a.setUp()
+    a.test_p9_pass_3()
+    a.test_p9_pass_additional()
+

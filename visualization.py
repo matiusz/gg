@@ -2,6 +2,10 @@ from enum import Enum
 
 import networkx as nx
 from matplotlib import pyplot as plt
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+
+
 
 
 class Direction(Enum):
@@ -26,6 +30,11 @@ class Vertex:
         self.level = level
         self.id = id[0]
         id[0] += 1
+    
+    @property
+    def levelPosTuple(self):
+        return (self.position[0], self.position[1], self.level)
+
 
     def __hash__(self) -> int:
         # NetworkX identifies vertices by hash
@@ -37,6 +46,8 @@ class Vertex:
 
     def __repr__(self):
         return f"{self.label} vertex at {self.position} and level {self.level}"
+
+
 
 
 class GraphMatcherByLabel(nx.isomorphism.GraphMatcher):
@@ -57,6 +68,44 @@ class TieredGraph:
         self.tiers.append([starting_vertex])
         self.productions = []
 
+    def show3d(self):
+        # The graph to visualize
+        G = self.graph
+
+        # 3d spring layout
+        pos = nx.spring_layout(G, dim=3, seed=779)
+        # Extract node and edge positions from the layout
+        node_xyz = np.array([v.levelPosTuple for v in G.nodes()])
+        edge_xyz = np.array([(u.levelPosTuple, v.levelPosTuple) for u, v in G.edges()])
+        colors = [self.color_mapping[(node.level, node.label)] for node in G.nodes()]
+
+        # Create the 3D figure
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection="3d")
+
+        # Plot the nodes - alpha is scaled by "depth" automatically
+        ax.scatter(*node_xyz.T, s=100, ec="w", c = colors)
+
+        # Plot the edges
+        for vizedge in edge_xyz:
+            ax.plot(*vizedge.T, color="tab:gray")
+
+        self._format_axes(ax)
+        fig.tight_layout()
+        plt.show()
+
+    def _format_axes(self, ax):
+        """Visualization options for the 3D axes."""
+        # Turn gridlines off
+        ax.grid(False)
+        # Suppress tick labels
+        for dim in (ax.xaxis, ax.yaxis, ax.zaxis):
+            dim.set_ticks([])
+        # Set axes labels
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_zlabel("z")
+        
     @property
     def color_mapping(self):
         return {
@@ -550,3 +599,17 @@ class TieredGraph:
         print(f"Tiers after P10 {self.tiers}")
 
         return self
+
+
+def setUp():
+    v1 = (-1, 1)
+    v2 = (1, 1)
+    v3 = (-1, -1)
+    v4 = (1, -1)
+    return TieredGraph((v1, v2, v3, v4))
+
+g = setUp()
+g.P1()
+g.show3d()
+g.P2(1)
+g.show3d()
