@@ -818,14 +818,14 @@ def setUp():
     v4 = (1, -1)
     return TieredGraph((v1, v2, v3, v4))
 
+
 if __name__ == "__main__":
     g = setUp()
     g.P1()
-    g.P2(1, direction = Direction.HORIZONTAL)
+    g.P2(1, direction=Direction.HORIZONTAL)
     g.P2(2)
     g.P2(2)
-    # g.show3d()
-    # g.showLevel(3)
     g.show3d(doJitter=True)
     g.P9(3)
     g.showLevel(3)
+    g.show3d(doJitter=True)
