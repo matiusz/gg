@@ -1,4 +1,5 @@
 from enum import Enum
+from platform import node
 
 import networkx as nx
 from matplotlib import pyplot as plt
@@ -670,53 +671,41 @@ class TieredGraph:
              (v2, v3), (v1_1, v2_2), (v2_2, v3_3)])
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
-        nodes_to_remove = []
+        
+        k1, k1_1, k2, k2_2, k3, k3_3 = (None, ) * 6
+
+        print(f"{list(matches) = }")
+        matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
+
         while match := next(matches):
-            nodes_to_remove = []
+            e_nodes = [node for node in match.keys() if node.label == "E"]
+            node_pairs = []
+            for idx1, node1 in enumerate(e_nodes):
+                for node2 in e_nodes[idx1:]:
+                    if node1.id != node2.id and node1.position == node2.position:
+                        node_pairs.append((node1, node2))
+            if len(node_pairs) != 3:
+                continue
 
-            for k, v in match.items():
-                v.position = k.position
-                if v1_1.position == k.position or v2_2.position == k.position or v3_3.position == k.position:
-                    nodes_to_remove.append(k)
-            if v1_1.position == v1.position and v2.position == v2_2.position and v3_3.position == v3.position and v1.position[0]/2 + v3.position[0]/2 == v2.position[0] and v1.position[1]/2 + v3.position[1]/2 == v2.position[1]:
+            k1, k1_1 = node_pairs[0]
+            k2, k2_2 = node_pairs[1]
+            k3, k3_3 = node_pairs[2]
+
+            if k1_1.position == k1.position and k2.position == k2_2.position and k3_3.position == k3.position \
+                    and k1.position[0]/2 + k3.position[0]/2 == k2.position[0] \
+                    and k1.position[1]/2 + k3.position[1]/2 == k2.position[1]:
                 break
-        assert match is not None, f"P9: No match for {LHS} found!"
-        print(match.items())
+        
+        self.graph.add_edges_from([(k1, v) if u == k1_1 else (u, k1) for u,v in self.graph.edges(k1_1)])
+        self.graph.add_edges_from([(k2, v) if u == k2_2 else (u, k2) for u,v in self.graph.edges(k2_2)])
+        self.graph.add_edges_from([(k3, v) if u == k3_3 else (u, k3) for u,v in self.graph.edges(k3_3)])
 
-        RHS = nx.Graph()
-        RHS.add_node(new_v1 := Vertex(v1.position, "E", level))
-        RHS.add_node(new_v2 := Vertex(v2.position, "E", level))
-        RHS.add_node(new_v3 := Vertex(v3.position, "E", level))
-        RHS.add_node(new_I_1 := Vertex(I_1.position, "I", level))
-        RHS.add_node(new_I_2 := Vertex(I_2.position, "I", level))
-        RHS.add_node(new_I_3 := Vertex(I_3.position, "I", level))
-        RHS.add_node(new_I_4 := Vertex(I_4.position, "I", level))
-
-        v1_1_edges = [edge for edge in self.graph.edges.keys() if v1_1.__repr__() in [edge[0].__repr__(), edge[1].__repr__()]]
-        v2_2_edges = [edge for edge in self.graph.edges.keys() if v2_2.__repr__() in [edge[0].__repr__(), edge[1].__repr__()]]
-        v3_3_edges = [edge for edge in self.graph.edges.keys() if v3_3.__repr__() in [edge[0].__repr__(), edge[1].__repr__()]]
-
-        edges = [(new_v1, new_I_1),
-                 (new_v1, new_I_3),
-                 (new_v1, new_v2),
-                 (new_v2, new_I_1),
-                 (new_v2, new_I_2),
-                 (new_v2, new_I_3),
-                 (new_v2, new_I_4),
-                 (new_v2, new_v3),
-                 (new_v3, new_I_2),
-                 (new_v3, new_I_4)
-                 ]
-
-        RHS.add_edges_from(edges)
-
-        verticesFromLevel = self.tiers[level]
-        self.tiers[level] = [v for v in verticesFromLevel if v not in nodes_to_remove]
-
-        # add edges between layers (between i and Is)
-        self.graph.add_edges_from(edges)
+        nodes_to_remove = [k1_1, k2_2, k3_3]
 
         self.graph.remove_nodes_from(nodes_to_remove)
+
+        print(self.graph.edges())
+        self.tiers[level] = [v for v in self.tiers[level] if v not in nodes_to_remove]
 
         print(f"Tiers after P9 {self.tiers}")
         self.productions.append(Production.P9)
@@ -813,13 +802,14 @@ def setUp():
     v4 = (1, -1)
     return TieredGraph((v1, v2, v3, v4))
 
-g = setUp()
-g.P1()
-g.P2(1, direction = Direction.HORIZONTAL)
-g.P2(2)
-g.P2(2)
-# g.show3d()
-# g.showLevel(3)
-g.P9(3)
-g.showLevel(3)
-g.show3d()
+if __name__ == "__main__":
+    g = setUp()
+    g.P1()
+    g.P2(1, direction = Direction.HORIZONTAL)
+    g.P2(2)
+    g.P2(2)
+    # g.show3d()
+    # g.showLevel(3)
+    g.P9(3)
+    g.showLevel(3)
+    g.show3d()

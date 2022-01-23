@@ -57,3 +57,7 @@ class P1P2P2P2P9Test(unittest.TestCase):
 
         self.validate_tiers(g, expected_tiers)
         self.validate_graph(g, expected_nodes, expected_edges)
+
+
+if __name__ == "__main__":
+    unittest.main()
