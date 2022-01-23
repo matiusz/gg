@@ -33,7 +33,7 @@ class Vertex:
     
     @property
     def levelPosTuple(self):
-        return (self.position[0], self.position[1], self.level)
+        return (self.position[0], self.position[1], -self.level)
 
 
     def __hash__(self) -> int:
@@ -192,7 +192,7 @@ class TieredGraph:
             i := Vertex(((self.corners[0][0] + self.corners[1][0]) / 2, (self.corners[0][1] + self.corners[2][1]) / 2),
                         "I", 1))
         RHS.add_edges_from([(v1, v2), (v2, v4), (v4, v3), (v3, v1),
-                            (v1, i), (v2, i), (v3, i), (v4, i)])
+                            (v1, i), (v2, i), (v3, i), (v4, i), (v0, i)])
         self.tiers[0] = [v0]
         self.tiers.append([v1, v2, v3, v4, i])  # appending RHS to first level
 
@@ -807,6 +807,11 @@ def setUp():
 
 g = setUp()
 g.P1()
+g.P2(1, direction = Direction.HORIZONTAL)
+g.P2(2)
+g.P2(2)
 g.show3d()
-g.P2(1)
+g.showLevel(3)
+g.P9(3)
+g.showLevel(3)
 g.show3d()
