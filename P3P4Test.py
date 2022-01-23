@@ -4,6 +4,7 @@ from visualization import TieredGraph, Vertex, GraphMatcherByLabel
 import networkx as nx
 
 
+
 class P3P4Test(unittest.TestCase):
     def setUp(self):
         v1 = (-1, 1)

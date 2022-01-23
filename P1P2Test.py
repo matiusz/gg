@@ -82,6 +82,8 @@ class P1P2Test(unittest.TestCase):
         v0.label = "U"
         graph_with_one_node.graph.add_node(v0)
         graph_with_one_node.showLevel(0)
+        graph_with_one_node.P1()
+        graph_with_one_node.showLevel(0)
 
         self.validate_tiers(graph_with_one_node, expected_tiers)
         self.validate_graph(graph_with_one_node, expected_nodes, expected_edges)
