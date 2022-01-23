@@ -705,7 +705,7 @@ class TieredGraph:
         self.graph.remove_nodes_from(nodes_to_remove)
 
         print(self.graph.edges())
-        self.tiers[level] = [v for v in self.tiers[level] if v not in nodes_to_remove]
+        self.tiers[level] = [v for v in self.tiers[level] if v.id not in [n.id for n in nodes_to_remove]]
 
         print(f"Tiers after P9 {self.tiers}")
         self.productions.append(Production.P9)

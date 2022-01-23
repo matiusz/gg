@@ -38,20 +38,119 @@ class P1P2P2P2P9Test(unittest.TestCase):
                              [(pair[0].__repr__(), pair[1].__repr__()) for pair in list(graph.graph.edges)]))
 
     def test_p1_p2_p2_p2_p9(self):
-        expected_tiers = []
+        expected_tiers = ['[E vertex at (-1, 1) and level 1, E vertex at (1, 1) and level 1, E vertex '
+                          'at (-1, -1) and level 1, E vertex at (1, -1) and level 1, i vertex at (0.0, '
+                          '0.0) and level 1]',
+                          '[E vertex at (-1, 1) and level 2, E vertex at (0.0, 1.0) and level 2, E '
+                          'vertex at (1, 1) and level 2, E vertex at (-1, -1) and level 2, E vertex at '
+                          '(0.0, -1.0) and level 2, E vertex at (1, -1) and level 2, i vertex at (-0.5, '
+                          '0.0) and level 2, i vertex at (0.5, 0.0) and level 2]',
+                          '[E vertex at (-1, 1) and level 3, E vertex at (-1.0, 0.0) and level 3, E '
+                          'vertex at (-1, -1) and level 3, E vertex at (0.0, 1.0) and level 3, E vertex '
+                          'at (0.0, 0.0) and level 3, E vertex at (0.0, -1.0) and level 3, I vertex at '
+                          '(-0.5, 0.5) and level 3, I vertex at (-0.5, -0.5) and level 3, E vertex at '
+                          '(1, 1) and level 3, E vertex at (1.0, 0.0) and level 3, E vertex at (1, -1) '
+                          'and level 3, I vertex at (0.5, 0.5) and level 3, I vertex at (0.5, -0.5) and '
+                          'level 3]',
+                          '[e vertex at (0, 0) and level 0]']
 
-        expected_nodes = []
+        expected_nodes = ['E vertex at (-1, -1) and level 1',
+                          'E vertex at (-1, -1) and level 2',
+                          'E vertex at (-1, -1) and level 3',
+                          'E vertex at (-1, 1) and level 1',
+                          'E vertex at (-1, 1) and level 2',
+                          'E vertex at (-1, 1) and level 3',
+                          'E vertex at (-1.0, 0.0) and level 3',
+                          'E vertex at (0.0, -1.0) and level 2',
+                          'E vertex at (0.0, -1.0) and level 3',
+                          'E vertex at (0.0, 0.0) and level 3',
+                          'E vertex at (0.0, 1.0) and level 2',
+                          'E vertex at (0.0, 1.0) and level 3',
+                          'E vertex at (1, -1) and level 1',
+                          'E vertex at (1, -1) and level 2',
+                          'E vertex at (1, -1) and level 3',
+                          'E vertex at (1, 1) and level 1',
+                          'E vertex at (1, 1) and level 2',
+                          'E vertex at (1, 1) and level 3',
+                          'E vertex at (1.0, 0.0) and level 3',
+                          'I vertex at (-0.5, -0.5) and level 3',
+                          'I vertex at (-0.5, 0.5) and level 3',
+                          'I vertex at (0.5, -0.5) and level 3',
+                          'I vertex at (0.5, 0.5) and level 3',
+                          'e vertex at (0, 0) and level 0',
+                          'i vertex at (-0.5, 0.0) and level 2',
+                          'i vertex at (0.0, 0.0) and level 1',
+                          'i vertex at (0.5, 0.0) and level 2']
 
-        expected_edges = []
+        expected_edges = [('E vertex at (-1, -1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (-1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, -1) and level 2', 'E vertex at (0.0, -1.0) and level 2'),
+                          ('E vertex at (-1, -1) and level 2', 'i vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (-1, -1) and level 3', 'E vertex at (0.0, -1.0) and level 3'),
+                          ('E vertex at (-1, -1) and level 3', 'I vertex at (-0.5, -0.5) and level 3'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (-1, -1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, 1) and level 2', 'E vertex at (-1, -1) and level 2'),
+                          ('E vertex at (-1, 1) and level 2', 'E vertex at (0.0, 1.0) and level 2'),
+                          ('E vertex at (-1, 1) and level 2', 'i vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (-1, 1) and level 3', 'E vertex at (-1.0, 0.0) and level 3'),
+                          ('E vertex at (-1, 1) and level 3', 'E vertex at (0.0, 1.0) and level 3'),
+                          ('E vertex at (-1, 1) and level 3', 'I vertex at (-0.5, 0.5) and level 3'),
+                          ('E vertex at (-1.0, 0.0) and level 3', 'E vertex at (-1, -1) and level 3'),
+                          ('E vertex at (-1.0, 0.0) and level 3', 'E vertex at (0.0, 0.0) and level 3'),
+                          ('E vertex at (-1.0, 0.0) and level 3',
+                           'I vertex at (-0.5, -0.5) and level 3'),
+                          ('E vertex at (-1.0, 0.0) and level 3', 'I vertex at (-0.5, 0.5) and level 3'),
+                          ('E vertex at (0.0, -1.0) and level 2', 'E vertex at (1, -1) and level 2'),
+                          ('E vertex at (0.0, -1.0) and level 2', 'i vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, -1.0) and level 2', 'i vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, -1.0) and level 3', 'E vertex at (1, -1) and level 3'),
+                          ('E vertex at (0.0, -1.0) and level 3',
+                           'I vertex at (-0.5, -0.5) and level 3'),
+                          ('E vertex at (0.0, -1.0) and level 3', 'I vertex at (0.5, -0.5) and level 3'),
+                          ('E vertex at (0.0, 0.0) and level 3', 'E vertex at (0.0, -1.0) and level 3'),
+                          ('E vertex at (0.0, 0.0) and level 3', 'E vertex at (1.0, 0.0) and level 3'),
+                          ('E vertex at (0.0, 0.0) and level 3', 'I vertex at (-0.5, -0.5) and level 3'),
+                          ('E vertex at (0.0, 0.0) and level 3', 'I vertex at (-0.5, 0.5) and level 3'),
+                          ('E vertex at (0.0, 0.0) and level 3', 'I vertex at (0.5, -0.5) and level 3'),
+                          ('E vertex at (0.0, 0.0) and level 3', 'I vertex at (0.5, 0.5) and level 3'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'E vertex at (0.0, -1.0) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'E vertex at (1, 1) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'i vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'i vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 3', 'E vertex at (0.0, 0.0) and level 3'),
+                          ('E vertex at (0.0, 1.0) and level 3', 'E vertex at (1, 1) and level 3'),
+                          ('E vertex at (0.0, 1.0) and level 3', 'I vertex at (-0.5, 0.5) and level 3'),
+                          ('E vertex at (0.0, 1.0) and level 3', 'I vertex at (0.5, 0.5) and level 3'),
+                          ('E vertex at (1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, -1) and level 2', 'i vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (1, -1) and level 3', 'I vertex at (0.5, -0.5) and level 3'),
+                          ('E vertex at (1, 1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, 1) and level 2', 'E vertex at (1, -1) and level 2'),
+                          ('E vertex at (1, 1) and level 2', 'i vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (1, 1) and level 3', 'E vertex at (1.0, 0.0) and level 3'),
+                          ('E vertex at (1, 1) and level 3', 'I vertex at (0.5, 0.5) and level 3'),
+                          ('E vertex at (1.0, 0.0) and level 3', 'E vertex at (1, -1) and level 3'),
+                          ('E vertex at (1.0, 0.0) and level 3', 'I vertex at (0.5, -0.5) and level 3'),
+                          ('E vertex at (1.0, 0.0) and level 3', 'I vertex at (0.5, 0.5) and level 3'),
+                          ('e vertex at (0, 0) and level 0', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('i vertex at (-0.5, 0.0) and level 2',
+                           'I vertex at (-0.5, -0.5) and level 3'),
+                          ('i vertex at (-0.5, 0.0) and level 2', 'I vertex at (-0.5, 0.5) and level 3'),
+                          ('i vertex at (0.0, 0.0) and level 1', 'i vertex at (-0.5, 0.0) and level 2'),
+                          ('i vertex at (0.0, 0.0) and level 1', 'i vertex at (0.5, 0.0) and level 2'),
+                          ('i vertex at (0.5, 0.0) and level 2', 'I vertex at (0.5, -0.5) and level 3'),
+                          ('i vertex at (0.5, 0.0) and level 2', 'I vertex at (0.5, 0.5) and level 3')]
 
         g = self.graph
         g.P1()
-        g.P2(1, Direction.HORIZONTAL)
-        g.P2(2)
-        g.P2(2)
-        g.show3d()
-        g.showLevel(3)
+        g.P2(1)
+        g.P2(2, Direction.HORIZONTAL)
+        g.P2(2, Direction.HORIZONTAL)
         g.P9(3)
+
         g.showLevel(3)
         g.show3d()
 
