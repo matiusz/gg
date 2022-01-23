@@ -18,6 +18,8 @@ class Production(Enum):
     P2 = 'P2'
     P3 = 'P3'
     P4 = 'P4'
+    P9 = 'P9'
+    P10 = 'P10'
 
     def __repr__(self):
         return self.name
@@ -30,7 +32,7 @@ class Vertex:
         self.level = level
         self.id = id[0]
         id[0] += 1
-    
+
     @property
     def levelPosTuple(self):
         return (self.position[0], self.position[1], -self.level)
@@ -105,7 +107,7 @@ class TieredGraph:
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("z")
-        
+
     @property
     def color_mapping(self):
         return {
@@ -681,15 +683,18 @@ class TieredGraph:
         assert match is not None, f"P9: No match for {LHS} found!"
         print(match.items())
 
-
         RHS = nx.Graph()
-        RHS.add_node(new_v1 := Vertex(v1.position, "E", level + 1))
-        RHS.add_node(new_v2 := Vertex(v2.position, "E", level + 1))
-        RHS.add_node(new_v3 := Vertex(v3.position, "E", level + 1))
-        RHS.add_node(new_I_1 := Vertex(I_1.position, "I", level + 1))
-        RHS.add_node(new_I_2 := Vertex(I_2.position, "I", level + 1))
-        RHS.add_node(new_I_3 := Vertex(I_3.position, "I", level + 1))
-        RHS.add_node(new_I_4 := Vertex(I_4.position, "I", level + 1))
+        RHS.add_node(new_v1 := Vertex(v1.position, "E", level))
+        RHS.add_node(new_v2 := Vertex(v2.position, "E", level))
+        RHS.add_node(new_v3 := Vertex(v3.position, "E", level))
+        RHS.add_node(new_I_1 := Vertex(I_1.position, "I", level))
+        RHS.add_node(new_I_2 := Vertex(I_2.position, "I", level))
+        RHS.add_node(new_I_3 := Vertex(I_3.position, "I", level))
+        RHS.add_node(new_I_4 := Vertex(I_4.position, "I", level))
+
+        v1_1_edges = [edge for edge in self.graph.edges.keys() if v1_1.__repr__() in [edge[0].__repr__(), edge[1].__repr__()]]
+        v2_2_edges = [edge for edge in self.graph.edges.keys() if v2_2.__repr__() in [edge[0].__repr__(), edge[1].__repr__()]]
+        v3_3_edges = [edge for edge in self.graph.edges.keys() if v3_3.__repr__() in [edge[0].__repr__(), edge[1].__repr__()]]
 
         edges = [(new_v1, new_I_1),
                  (new_v1, new_I_3),
@@ -705,7 +710,8 @@ class TieredGraph:
 
         RHS.add_edges_from(edges)
 
-        self.tiers.append([new_v1, new_v2, new_v3, new_v3, new_I_1, new_I_2, new_I_3, new_I_4])
+        verticesFromLevel = self.tiers[level]
+        self.tiers[level] = [v for v in verticesFromLevel if v not in nodes_to_remove]
 
         # add edges between layers (between i and Is)
         self.graph.add_edges_from(edges)
@@ -713,6 +719,7 @@ class TieredGraph:
         self.graph.remove_nodes_from(nodes_to_remove)
 
         print(f"Tiers after P9 {self.tiers}")
+        self.productions.append(Production.P9)
 
         return self
 
@@ -794,6 +801,7 @@ class TieredGraph:
         self.graph.remove_nodes_from(nodes_to_remove)
 
         print(f"Tiers after P10 {self.tiers}")
+        self.productions.append(Production.P10)
 
         return self
 
@@ -810,8 +818,8 @@ g.P1()
 g.P2(1, direction = Direction.HORIZONTAL)
 g.P2(2)
 g.P2(2)
-g.show3d()
-g.showLevel(3)
+# g.show3d()
+# g.showLevel(3)
 g.P9(3)
 g.showLevel(3)
 g.show3d()

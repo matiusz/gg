@@ -48,20 +48,15 @@ class P1P2Test(unittest.TestCase):
                           'E vertex at (1, -1) and level 1',
                           'I vertex at (0.0, 0.0) and level 1']
 
-        expected_edges = [('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
-                          ('E vertex at (-1, 1) and level 1',
-                           'E vertex at (-1, -1) and level 1'),
-                          ('E vertex at (-1, 1) and level 1',
-                           'I vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (1, 1) and level 1',
-                           'E vertex at (1, -1) and level 1'),
-                          ('E vertex at (1, 1) and level 1',
-                           'I vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (-1, -1) and level 1',
-                           'E vertex at (1, -1) and level 1'),
-                          ('E vertex at (-1, -1) and level 1',
-                           'I vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+        expected_edges = [('E vertex at (-1, -1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (-1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (-1, -1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, 1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('e vertex at (0, 0) and level 0', 'I vertex at (0.0, 0.0) and level 1')]
 
         g = self.graph.P1()
         g.showLevel(1)
@@ -108,54 +103,32 @@ class P1P2Test(unittest.TestCase):
                           'I vertex at (-0.5, 0.0) and level 2',
                           'I vertex at (0.5, 0.0) and level 2']
 
-        expected_edges = [('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
-                          ('E vertex at (-1, 1) and level 1',
-                           'E vertex at (-1, -1) and level 1'),
-                          ('E vertex at (-1, 1) and level 1',
-                           'i vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (1, 1) and level 1',
-                           'E vertex at (1, -1) and level 1'),
-                          ('E vertex at (1, 1) and level 1',
-                           'i vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (-1, -1) and level 1',
-                           'E vertex at (1, -1) and level 1'),
-                          ('E vertex at (-1, -1) and level 1',
-                           'i vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (1, -1) and level 1',
-                           'i vertex at (0.0, 0.0) and level 1'),
-                          ('i vertex at (0.0, 0.0) and level 1',
-                           'I vertex at (-0.5, 0.0) and level 2'),
-                          ('i vertex at (0.0, 0.0) and level 1',
-                           'I vertex at (0.5, 0.0) and level 2'),
-                          ('E vertex at (-1, 1) and level 2',
-                           'E vertex at (0.0, 1.0) and level 2'),
-                          ('E vertex at (-1, 1) and level 2',
-                           'E vertex at (-1, -1) and level 2'),
-                          ('E vertex at (-1, 1) and level 2',
-                           'I vertex at (-0.5, 0.0) and level 2'),
-                          ('E vertex at (0.0, 1.0) and level 2',
-                           'E vertex at (1, 1) and level 2'),
-                          ('E vertex at (0.0, 1.0) and level 2',
-                           'E vertex at (0.0, -1.0) and level 2'),
-                          ('E vertex at (0.0, 1.0) and level 2',
-                           'I vertex at (-0.5, 0.0) and level 2'),
-                          ('E vertex at (0.0, 1.0) and level 2',
-                           'I vertex at (0.5, 0.0) and level 2'),
-                          ('E vertex at (1, 1) and level 2',
-                           'E vertex at (1, -1) and level 2'),
-                          ('E vertex at (1, 1) and level 2',
-                           'I vertex at (0.5, 0.0) and level 2'),
-                          ('E vertex at (-1, -1) and level 2',
-                           'E vertex at (0.0, -1.0) and level 2'),
-                          ('E vertex at (-1, -1) and level 2',
-                           'I vertex at (-0.5, 0.0) and level 2'),
-                          ('E vertex at (0.0, -1.0) and level 2',
-                           'E vertex at (1, -1) and level 2'),
-                          ('E vertex at (0.0, -1.0) and level 2',
-                           'I vertex at (-0.5, 0.0) and level 2'),
-                          ('E vertex at (0.0, -1.0) and level 2',
-                           'I vertex at (0.5, 0.0) and level 2'),
-                          ('E vertex at (1, -1) and level 2', 'I vertex at (0.5, 0.0) and level 2')]
+        expected_edges = [('E vertex at (-1, -1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (-1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, -1) and level 2', 'E vertex at (0.0, -1.0) and level 2'),
+                          ('E vertex at (-1, -1) and level 2', 'I vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (-1, -1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
+                          ('E vertex at (-1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (-1, 1) and level 2', 'E vertex at (-1, -1) and level 2'),
+                          ('E vertex at (-1, 1) and level 2', 'E vertex at (0.0, 1.0) and level 2'),
+                          ('E vertex at (-1, 1) and level 2', 'I vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, -1.0) and level 2', 'E vertex at (1, -1) and level 2'),
+                          ('E vertex at (0.0, -1.0) and level 2', 'I vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, -1.0) and level 2', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'E vertex at (0.0, -1.0) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'E vertex at (1, 1) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'I vertex at (-0.5, 0.0) and level 2'),
+                          ('E vertex at (0.0, 1.0) and level 2', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (1, -1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, -1) and level 2', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('E vertex at (1, 1) and level 1', 'E vertex at (1, -1) and level 1'),
+                          ('E vertex at (1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('E vertex at (1, 1) and level 2', 'E vertex at (1, -1) and level 2'),
+                          ('E vertex at (1, 1) and level 2', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('e vertex at (0, 0) and level 0', 'i vertex at (0.0, 0.0) and level 1'),
+                          ('i vertex at (0.0, 0.0) and level 1', 'I vertex at (-0.5, 0.0) and level 2'),
+                          ('i vertex at (0.0, 0.0) and level 1', 'I vertex at (0.5, 0.0) and level 2')]
 
         self.graph.P1()
         g = self.graph.P2(1)
@@ -209,6 +182,7 @@ class P1P2Test(unittest.TestCase):
                           ('E vertex at (1.0, 0.0) and level 2', 'E vertex at (1, -1) and level 2'),
                           ('E vertex at (1.0, 0.0) and level 2', 'I vertex at (0.0, -0.5) and level 2'),
                           ('E vertex at (1.0, 0.0) and level 2', 'I vertex at (0.0, 0.5) and level 2'),
+                          ('e vertex at (0, 0) and level 0', 'i vertex at (0.0, 0.0) and level 1'),
                           ('i vertex at (0.0, 0.0) and level 1', 'I vertex at (0.0, -0.5) and level 2'),
                           ('i vertex at (0.0, 0.0) and level 1', 'I vertex at (0.0, 0.5) and level 2')]
 
@@ -303,6 +277,7 @@ class P1P2Test(unittest.TestCase):
                           ('E vertex at (1, 1) and level 1', 'i vertex at (0.0, 0.0) and level 1'),
                           ('E vertex at (1, 1) and level 2', 'E vertex at (1, -1) and level 2'),
                           ('E vertex at (1, 1) and level 2', 'I vertex at (0.5, 0.0) and level 2'),
+                          ('e vertex at (0, 0) and level 0', 'i vertex at (0.0, 0.0) and level 1'),
                           ('i vertex at (-0.5, 0.0) and level 2',
                            'I vertex at (-0.25, 0.0) and level 3'),
                           ('i vertex at (-0.5, 0.0) and level 2',
@@ -332,7 +307,8 @@ class P1P2Test(unittest.TestCase):
                           ('E vertex at (-1, 1) and level 1', 'E vertex at (-1, -1) and level 1'),
                           ('E vertex at (-1, 1) and level 1', 'E vertex at (1, 1) and level 1'),
                           ('E vertex at (-1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
-                          ('E vertex at (1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+                          ('E vertex at (1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('e vertex at (0, 0) and level 0', 'I vertex at (0.0, 0.0) and level 1')]
 
         g = self.graph.P1()
         g.showLevel(1)
@@ -364,7 +340,8 @@ class P1P2Test(unittest.TestCase):
                           ('E vertex at (-1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
                           ('E vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
                           ('E vertex at (1, 1) and level 1', 'E vertex at (1, -1) and level 1'),
-                          ('E vertex at (1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+                          ('E vertex at (1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('e vertex at (0, 0) and level 0', 'I vertex at (0.0, 0.0) and level 1')]
 
         g = self.graph.P1()
         g.showLevel(1)
@@ -398,7 +375,8 @@ class P1P2Test(unittest.TestCase):
                           ('E vertex at (-1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
                           ('E vertex at (1, 1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
                           ('E vertex at (1, 1) and level 1', 'U vertex at (1, -1) and level 1'),
-                          ('U vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1')]
+                          ('U vertex at (1, -1) and level 1', 'I vertex at (0.0, 0.0) and level 1'),
+                          ('e vertex at (0, 0) and level 0', 'I vertex at (0.0, 0.0) and level 1')]
 
         g = self.graph.P1()
 
