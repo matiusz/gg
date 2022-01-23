@@ -393,5 +393,72 @@ class TieredGraph:
         self.productions.append(Production.P4)
         return self
 
-    def P_13(self):
-        pass
+
+    def P13(self, level):
+        LHS = nx.Graph()
+        LHS.add_node(v0 := Vertex(None, "E", level))
+        LHS.add_node(v1 := Vertex(None, "E", level))
+        LHS.add_node(v1_2 := Vertex(None, "E", level))
+        LHS.add_node(v2 := Vertex(None, "E", level))
+        LHS.add_node(v3_1 := Vertex(None, "E", level))
+        LHS.add_node(v3_2 := Vertex(None, "E", level))
+        LHS.add_node(I0_1 := Vertex(None, "I", level))
+        LHS.add_node(I0_2 := Vertex(None, "I", level))
+        LHS.add_node(I1 := Vertex(None, "I", level))
+        LHS.add_node(I2 := Vertex(None, "I", level))
+        LHS.add_node(I3 := Vertex(None, "I", level))
+
+        LHS.add_edges_from(
+            [(v0, I0_1), (v0, I0_2), (I0_1, I1), (I0_1, I2), (I1, v1), (I1, v1_2),
+             (I2, v1_2), (I2, v2), (v1, v1_2), (v1_2, v2), (I0_2, I3), (I3, v3_1),
+             (I3, v3_2), (v3_1, v3_2)]
+        )
+
+        matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
+        nodes_to_remove = []
+        new_I1 = None
+        new_I2 = None
+        new_I3 = None
+        new_v1_2 = None
+        while match := next(matches):
+            nodes_to_remove = []
+
+            for k, v in match.items():
+                v.position = k.position
+                if v3_1.position == k.position or v3_2.position == k.position:
+                    nodes_to_remove.append(k)
+                if I1.position == k.position:
+                    new_I1 = k
+                if I2.position == k.position:
+                    new_I2 = k
+                if I3.position == k.position:
+                    new_I3 = k
+                if v1_2.position == k.position:
+                    new_v1_2 = k
+            if v3_1.position == v1.position and v2.position == v3_2.position \
+                    and v1.position[0]/2 + v2.position[0]/2 == v1_2.position[0]:
+                break
+        assert match is not None, f"P13: No match for {LHS} found!"
+        print(match.items())
+
+        new_v1 = [v for v in list(self.graph.neighbors(new_v1_2)) if v.position == v1.position][0]
+        new_v2 = [v for v in list(self.graph.neighbors(new_v1_2)) if v.position == v2.position][0]
+
+        self.graph.remove_nodes_from(nodes_to_remove)
+        edges = [(new_I3, new_v1), (new_I3, new_v2)]
+        self.graph.add_edges_from(edges)
+
+        indexes = []
+        for k in range(0, len(nodes_to_remove)):
+            for i in range(0, len(self.tiers[level])):
+                if nodes_to_remove[k].position == self.tiers[level][i].position and nodes_to_remove[k].label == self.tiers[level][i].label:
+                    indexes.append(i)
+                    break
+        for i in sorted(indexes, reverse=True):
+            self.tiers[level].pop(i)
+
+        print(f"Tiers after P13 {self.tiers}")
+
+        return self
+
+
