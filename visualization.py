@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
-
+import random
 
 
 class Direction(Enum):
@@ -61,6 +61,13 @@ class GraphMatcherByLabel(nx.isomorphism.GraphMatcher):
         return G1_node.label == G2_node.label and G2_node.level == G2_node.level
 
 
+def jitter(t):
+    r = 0.05
+    t0 = t[0] + random.uniform(-r, r)
+    t1 = t[1] + random.uniform(-r, r)
+    t2 = t[2] #+ random.uniform(-r, r)
+    return (t0, t1, t2)
+
 class TieredGraph:
     def __init__(self, corners: tuple):
         self.graph = nx.Graph()
@@ -71,15 +78,24 @@ class TieredGraph:
         self.tiers.append([starting_vertex])
         self.productions = []
 
-    def show3d(self):
+    def show3d(self, doJitter = False):
         # The graph to visualize
         G = self.graph
 
         # 3d spring layout
         pos = nx.spring_layout(G, dim=3, seed=779)
         # Extract node and edge positions from the layout
-        node_xyz = np.array([v.levelPosTuple for v in G.nodes()])
-        edge_xyz = np.array([(u.levelPosTuple, v.levelPosTuple) for u, v in G.edges()])
+        node_xyz = None
+        edge_xyz = None
+
+        if doJitter:
+            jN= {v : jitter(v.levelPosTuple) for v in G.nodes()}
+            node_xyz = np.array([jN[v] for v in G.nodes()])
+            edge_xyz = np.array([(jN[u], jN[v]) for u, v in G.edges()])
+        else:
+            node_xyz = np.array([v.levelPosTuple for v in G.nodes()])
+            edge_xyz = np.array([(u.levelPosTuple, v.levelPosTuple) for u, v in G.edges()])
+            
         colors = [self.color_mapping[(node.level, node.label)] for node in G.nodes()]
 
         # Create the 3D figure
@@ -810,6 +826,6 @@ if __name__ == "__main__":
     g.P2(2)
     # g.show3d()
     # g.showLevel(3)
+    g.show3d(doJitter=True)
     g.P9(3)
     g.showLevel(3)
-    g.show3d()
