@@ -415,12 +415,16 @@ class TieredGraph:
         )
 
         matches = GraphMatcherByLabel(self.graph, LHS).subgraph_isomorphisms_iter()
+        _exhausted  = object()
         nodes_to_remove = []
         new_I1 = None
         new_I2 = None
         new_I3 = None
         new_v1_2 = None
-        while match := next(matches):
+        while match := next(matches, _exhausted):
+            if match is _exhausted:
+                match = None
+                break
             nodes_to_remove = []
 
             for k, v in match.items():

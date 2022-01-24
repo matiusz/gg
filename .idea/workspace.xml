@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6ceb7535-c6ff-4bcc-b51f-09bae98933d6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/P12P13Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/P12P13Test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/visualization.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +33,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python tests.pytest for P3P4Test.P3P4Test.test_p3">
+  <component name="RunManager" selected="Python tests.pytest for P12P13Test.P12P13Test.test_P13_fail">
     <configuration name="pytest for P12P13Test.P12P13Test.test_P13_additional" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="gg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -119,10 +121,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for P3P4Test.P3P4Test.test_p3" />
         <item itemvalue="Python tests.pytest for P12P13Test.P12P13Test.test_P13_fail" />
         <item itemvalue="Python tests.pytest for P12P13Test.P12P13Test.test_P13_additional" />
         <item itemvalue="Python tests.pytest for P12P13Test.P12P13Test.test_P13_pass" />
+        <item itemvalue="Python tests.pytest for P3P4Test.P3P4Test.test_p3" />
         <item itemvalue="Python tests.pytest in P12P13Test.py" />
       </list>
     </recent_temporary>
@@ -135,7 +137,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1642972637450</updated>
-      <workItem from="1642972641159" duration="4831000" />
+      <workItem from="1642972641159" duration="8171000" />
     </task>
     <servers />
   </component>
@@ -144,9 +146,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/gg$pytest_in_P12P13Test_py.coverage" NAME="pytest in P12P13Test.py Coverage Results" MODIFIED="1642974447844" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/gg$pytest_for_P12P13Test_P12P13Test_test_P13_fail.coverage" NAME="pytest for P12P13Test.P12P13Test.test_P13_fail Coverage Results" MODIFIED="1642980437591" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/gg$pytest_for_P12P13Test_P12P13Test_test_P13_pass.coverage" NAME="pytest for P12P13Test.P12P13Test.test_P13_pass Coverage Results" MODIFIED="1642975666029" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/gg$pytest_for_P12P13Test_P12P13Test_test_P13_additional.coverage" NAME="pytest for P12P13Test.P12P13Test.test_P13_additional Coverage Results" MODIFIED="1642979697868" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/gg$pytest_for_P12P13Test_P12P13Test_test_P13_fail.coverage" NAME="pytest for P12P13Test.P12P13Test.test_P13_fail Coverage Results" MODIFIED="1643026451465" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/gg$pytest_for_P12P13Test_P12P13Test_test_P13_pass.coverage" NAME="pytest for P12P13Test.P12P13Test.test_P13_pass Coverage Results" MODIFIED="1643026465266" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/gg$pytest_for_P12P13Test_P12P13Test_test_P13_additional.coverage" NAME="pytest for P12P13Test.P12P13Test.test_P13_additional Coverage Results" MODIFIED="1643025736725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/gg$pytest_for_P3P4Test_P3P4Test_test_p3.coverage" NAME="pytest for P3P4Test.P3P4Test.test_p3 Coverage Results" MODIFIED="1642980459454" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/gg$pytest_for_P12P13Test_P12P13Test.coverage" NAME="pytest for P12P13Test.P12P13Test Coverage Results" MODIFIED="1642973303860" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
